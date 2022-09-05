@@ -1,0 +1,20 @@
+
+python -m http.server 8082
+
+localhost:8082
+----
+1. use version so that control browser refresh
+2. use module import vue dist 
+3. how config asset name after npm run build
+4. http.server 添加.js 映射，还是不起作用的原因是没有清除浏览器缓存。lib/http/server.js 里面 extensions_map
+5. vue.config.js 改变assetsDir 输出目录
+---------
+compile:
+dev:
+1.index.html 注销load(),这是部署才用。
+2.index.html 选择要编译的main.ts
+3.vite.config.js 里面要填好outDir,assetsDir
+release:
+1.index.html 打开load()
+2.删除硬js,css引用。
+3.配置动态加载的js,css 正确路径。

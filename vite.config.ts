@@ -6,6 +6,11 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {    
+    manifest: false,
+    outDir: 'assets',
+    assetsDir: 'pc'
+  },
   plugins: [vue(), vueJsx()],
   resolve: {
     alias: {
