@@ -8,8 +8,8 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 export default defineConfig({
   build: {    
     manifest: false,
-    outDir: 'assets',
-    assetsDir: 'pc'
+    outDir: 'dist',
+    assetsDir: 'assets'
   },
   plugins: [vue(), vueJsx()],
   resolve: {

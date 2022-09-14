@@ -1,84 +1,71 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+function MyResize(){
+    // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+    let vh = window.innerHeight * 0.01
+    // Then we set the value in the --vh custom property to the root of the document
+    document.documentElement.style.setProperty('--vh', `${vh}px`)
+
+    // We listen to the resize event
+    window.addEventListener('resize', () => {
+      // We execute the same script as before
+      let vh = window.innerHeight * 0.01
+      console.log(vh);
+      document.documentElement.style.setProperty('--vh', `${vh}px`)
+    })
+}
+MyResize()
 </script>
 
 <template>  
-   <header>
-    <img alt="Vue logo" class="logo" src="@/pc/assets/logo.svg" width="125" height="125" />
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />      
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-      
-    </div>
-  </header>
-
-   <RouterView />
+  <div class="head menu">
+      <RouterLink to="/" class="item index">首页</RouterLink>
+      <RouterLink to="/about" class="item register">注册</RouterLink>
+      <RouterLink to="/" class="item login">登录</RouterLink>
+  </div>
+  <RouterView class="content" > </RouterView>
+  <div class="footer menu">
+      2222
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
+.head{  
+  width: 1280px;
+  border: 1px solid red;
+  margin-top: 0;
+  height: 80px;
   display: block;
-  margin: 0 auto 2rem;
+  z-index: 9999;
+  background-color: aliceblue;
+}
+.item{
+  display: flex;
+}
+.index,.register{
+  float: left;
+}
+.login{
+  float:right;
+}
+/* content */
+/* .content{
+  position:relative;
+  margin-top: 85px;
+  height: 100%;
+} */
+.footer{
+  border: 1px solid red;
+  display: flex;
+  float: bottom;
+  /* left: 0px; */  
+  bottom: 0px;
+  width: 1280px;
+  height: 50px;
+  text-align:center;
+  color:#fff;
+  ackground-color: #000;
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
 </style>

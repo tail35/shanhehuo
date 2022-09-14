@@ -8,9 +8,10 @@ import SupportIcon from './icons/IconSupport.vue'
 </script>
 
 <template>
-  <div class="document">
   <WelcomeItem>
-
+    <template #icon>
+      <DocumentationIcon />
+    </template>
     <template #heading>Documentation</template>
 
     Vue’s
@@ -19,6 +20,9 @@ import SupportIcon from './icons/IconSupport.vue'
   </WelcomeItem>
 
   <WelcomeItem>
+    <template #icon>
+      <ToolingIcon />
+    </template>
     <template #heading>Tooling</template>
 
     This project is served and bundled with
@@ -37,7 +41,9 @@ import SupportIcon from './icons/IconSupport.vue'
   </WelcomeItem>
 
   <WelcomeItem>
-
+    <template #icon>
+      <EcosystemIcon />
+    </template>
     <template #heading>Ecosystem</template>
 
     Get official tools and libraries for your project:
@@ -51,6 +57,9 @@ import SupportIcon from './icons/IconSupport.vue'
   </WelcomeItem>
 
   <WelcomeItem>
+    <template #icon>
+      <CommunityIcon />
+    </template>
     <template #heading>Community</template>
 
     Got stuck? Ask your question on
@@ -63,32 +72,13 @@ import SupportIcon from './icons/IconSupport.vue'
   </WelcomeItem>
 
   <WelcomeItem>
+    <template #icon>
+      <SupportIcon />
+    </template>
     <template #heading>Support Vue</template>
 
     As an independent project, Vue relies on community backing for its sustainability. You can help
     us by
     <a target="_blank" href="https://vuejs.org/sponsor/">becoming a sponsor</a>.
   </WelcomeItem>
-</div>
 </template>
-
-<style scoped>
-.document{
-  position: relative;
-  top: 1000 rem;
-  border: 1px solid greenyellow; 
-  height: calc(100vh - 140px);
-}
-/* @media (min-height: 100vh) {
-  .document {
-    height: 100vh;
-  }
-} */
-/* @media (min-width: 1024px) {
-  .document {
-    min-height: 100vh;
-    align-items: center;
-  }
-} */
-
-</style>
