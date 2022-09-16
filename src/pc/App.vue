@@ -21,9 +21,10 @@ MyResize()
 <template>  
   <div class="head menu">
       <div class="item logo">111111</div>
-      <RouterLink to="/" class="item index">首页</RouterLink>      
-      <RouterLink to="/about" class="item register">注册</RouterLink>
+      <RouterLink to="/" class="item index">首页</RouterLink>
       <RouterLink to="/" class="item login">登录</RouterLink>
+      <RouterLink to="/register" class="item register">注册</RouterLink>
+      <RouterLink to="/about" class="item publish">发布</RouterLink>
   </div>
   <RouterView class="content" > </RouterView>
   <div class="footer menu">
@@ -48,7 +49,7 @@ MyResize()
 .index,.logo{
   float: left;
 }
-.register,.login{
+.register,.login,.publish{
   float:right;
 }
 /* content */
