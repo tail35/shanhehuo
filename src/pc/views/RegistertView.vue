@@ -1,19 +1,60 @@
 <template>
   <div class="divregister">     
-     <form id="idform" class="myform mytable" action="https://my1.cow8.cn:448/register?v=1" method="Post" enctype="multipart/form-data" name="myregister" target="frameName">
-      <div class="left cell item1">*手机：</div>  <input class="right cell item2" type="text" name="phone">
-      <div class="left cell item3">*密码：</div>  <input class="right cell item4" type="text" name="password">
-      <div class="left cell item4">*确认：</div>  <input class="right cell item6" type="text" name="confirm">
+     <form id="idform" class="myform mytable"  method="Post" enctype="multipart/form-data" name="myregister" target="frameName">
+      <div class="left cell item1">*手机：</div>  <input id="idphone" class="right cell item2" type="text" name="phone" >
+      <div class="left cell item3">*密码：</div>  <input id="idpwd" class="right cell item4" type="text" name="password">
+      <div class="left cell item4">*确认：</div>  <input id="idconfigpwd" class="right cell item6" type="text" name="confirm">
       <div class="left cell item7">*验证码：</div>  <input class="right cell item8" type="text" name="checkcode"> <img id="idimg" onclick="OnClickImg()" class="left cell item9"  />
-      <button class=" cell item10" type="submit" value="提交" >提交</button>
+      <button class=" cell item10" type="button" onclick="MySubmitButton()"  >提交</button>
     </form>
     <iframe class="iframe" id="myIframe1" name="frameName" >
     </iframe>
   </div>  
-  
 </template>
 
 <script setup lang="ts">
+    import { onMounted } from 'vue';
+    import {urlAction,urlImg} from "../js/common.ts"
+    import {SubmitRegister} from "../js/register"
+    //判断手机号是否合法
+    window.isPhoneNumber = function(tel) {
+        var reg =/^0?1[3|4|5|6|7|8][0-9]\d{8}$/;
+        return reg.test(tel);
+    }
+
+    window.MySubmitButton = function()
+    {
+      //phoneNumber
+      var myvalue = document.getElementById('idphone').value
+      if(!myvalue){
+        alert("手机号码不能空!")
+        return
+      }
+      // if( 11!=myvalue.length || !isPhoneNumber(myvalue)){
+      //   alert('请输入正确的手机号码')
+      //   return
+      // }
+      //password
+      var pwd = document.getElementById('idpwd').value
+      if(!pwd){
+        alert("密码不能空!")
+        return
+      }
+      var confirmMyvalue = document.getElementById('idconfigpwd').value
+      if(!confirmMyvalue){
+        alert("确认密码不能空!")
+        return
+      }
+      if(confirmMyvalue != pwd ){
+        alert("两次输入密码不相等!")
+        return
+      }
+      //
+            
+      var idfrom = document.getElementById('idform')
+      idfrom.submit()
+    }
+
     window.ContentChange = function(data)
     {
       console.log(data)
@@ -24,25 +65,23 @@
           window.ContentChange(e.data)
         }
     },false);//跨域通信，子通知父页面.不能少false,不然收不到。
-    
 
-    window.onload =function(){
-      
-      var url= "https://my1.cow8.cn:448/register?v="
+    window.myonload =function(){
+
       var myfrom = document.getElementById("idform")
-      myfrom.action = url+Math.random()
-
-      var img = document.getElementById("idimg")
-      img.src =url+Math.random()
+      myfrom.action = urlAction+Math.random()
+      var myimg = document.getElementById("idimg")
+      myimg.src =urlImg+Math.random()
+      
     }
     window.OnClickImg = function()
     {
       var img = document.getElementById("idimg")
-      img.src ="https://my1.cow8.cn:448/checkcode?v="+Math.random()
+      img.src = urlImg + Math.random()
     }
-
-    import {SubmitRegister} from "../js/register"
     SubmitRegister()
+    // 生命周期钩子
+    onMounted(() => {window.myonload(); });
 </script>
 <style>
 .mytable{
