@@ -4,7 +4,8 @@
       <div class="left cell item1">*手机：</div>  <input id="idphone" class="right cell item2" type="text" name="phone" >
       <div class="left cell item3">*密码：</div>  <input id="idpwd" class="right cell item4" type="text" name="password">
       <div class="left cell item4">*确认：</div>  <input id="idconfigpwd" class="right cell item6" type="text" name="confirm">
-      <div class="left cell item7">*验证码：</div>  <input class="right cell item8" type="text" name="checkcode"> <img id="idimg" onclick="OnClickImg()" class="left cell item9"  />
+      <div class="left cell item7">*验证码：</div>  <input class="right cell item8" type="text" name="checkcode"> <img   id="idimg" onclick="OnClickImg()" class="left cell item9"  />
+      <input id="stokenid" type="text" name="stoken" hidden>
       <button class=" cell item10" type="button" onclick="MySubmitButton()"  >提交</button>
     </form>
     <iframe class="iframe" id="myIframe1" name="frameName" >
@@ -13,6 +14,10 @@
 </template>
 
 <script setup lang="ts">
+    //https://www.npmjs.com/package/js-cookie
+    import Cookies from 'js-cookie'
+    
+
     import { onMounted } from 'vue';
     import {urlAction,urlImg} from "../js/common.ts"
     import {SubmitRegister} from "../js/register"
@@ -52,17 +57,23 @@
       //
             
       var idfrom = document.getElementById('idform')
+
+      document.getElementById('stokenid').setAttribute("value",Cookies.get('stoken'))
+      
+      console.log('qq:',document.getElementById('stokenid').value )
+
       idfrom.submit()
     }
 
-    window.ContentChange = function(data)
+    window.RegisterResult = function(data)
     {
-      console.log(data)
+      console.log(data)      
+      alert(data.msg)      
     }
     
     window.addEventListener("message", function(e){        
         if( e.data.action == "res"){
-          window.ContentChange(e.data)
+          window.RegisterResult(e.data)
         }
     },false);//跨域通信，子通知父页面.不能少false,不然收不到。
 
@@ -70,18 +81,21 @@
 
       var myfrom = document.getElementById("idform")
       myfrom.action = urlAction+Math.random()
-      var myimg = document.getElementById("idimg")
-      myimg.src =urlImg+Math.random()
-      
+
+      window.OnClickImg()
     }
     window.OnClickImg = function()
     {
       var img = document.getElementById("idimg")
-      img.src = urlImg + Math.random()
+      console.log(Cookies.get('stoken'))
+      img.src = urlImg + Math.random() +"&stoken="+Cookies.get('stoken')
+      
     }
     SubmitRegister()
     // 生命周期钩子
-    onMounted(() => {window.myonload(); });
+    onMounted(() => {
+      window.myonload(); }
+    );
 </script>
 <style>
 .mytable{
@@ -105,7 +119,8 @@
   /* border: 1px solid blue; */
 }
 .item9{
-  width: 50px;
+  width: 200px;
+  height: 73px;
   margin: 0 auto;
   padding: 0;
 }
