@@ -16,8 +16,6 @@ function GetStoken()
     var lstoken =  localStorage.getItem("stoken") 
     var cstoken = Cookies.get("stoken")
 
-    
-
     if( lstoken ){
         if( lstoken != cstoken ) {
             Cookies.set("stoken",lstoken)
@@ -44,7 +42,17 @@ function GetStoken()
             console.log(err);
         });    
 }
+function isLogin()
+{
+    var isLogin = Cookies.get('islogin')
+    if(null == isLogin){
+        Cookies.set('isLogin',"false")
+    }
+    Cookies.set('isLogin',"false")
+}
 
+
+isLogin()
 GetStoken()
 
 const app = createApp(App)

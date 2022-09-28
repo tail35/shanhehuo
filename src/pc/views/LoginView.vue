@@ -15,11 +15,12 @@
 <script setup lang="ts">
     //https://www.npmjs.com/package/js-cookie
     import Cookies from 'js-cookie'
-    
-
-    import { onMounted } from 'vue';
+    import { onMounted,getCurrentInstance} from 'vue';
+    import { useRoute } from 'vue-router';
     import {login_urlAction,login_urlImg} from "../js/common.ts"
     import {SubmitRegister} from "../js/register"
+
+    const {ctx,proxy} = getCurrentInstance()
     //判断手机号是否合法
     window.isPhoneNumber = function(tel) {
         var reg =/^0?1[3|4|5|6|7|8][0-9]\d{8}$/;
@@ -57,8 +58,14 @@
 
     window.LoginResult = function(data)
     {
-      console.log(data)      
-      alert(data.msg)      
+      console.log(data)
+      if('res'==data.action && 0==data.code){
+        Cookies.set('isLogin',"true")
+        proxy.$router.push({name:'home',query: {id:'1'}})//query url后跟id,params 是post 刷新丢失id
+        
+      }else{
+        alert(data.msg)
+      }
     }
     
     window.addEventListener("message", function(e){        

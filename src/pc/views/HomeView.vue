@@ -1,5 +1,14 @@
 <script setup lang="ts">
 import TheWelcome from '@/pc/components/TheWelcome.vue'
+import { onMounted,getCurrentInstance} from 'vue';
+const {ctx,proxy} = getCurrentInstance()
+//console.log('id:',proxy.$route.query.id )
+
+isLoginFunForHead()
+
+window.myp();
+// var idreglogin = window.document.getElementById('idreglogin')
+// console.log(idreglogin)
 </script>
 
 <template>
@@ -7,3 +16,6 @@ import TheWelcome from '@/pc/components/TheWelcome.vue'
     <TheWelcome />
   </main>
 </template>
+<style>
+
+</style>

@@ -16,8 +16,6 @@
 <script setup lang="ts">
     //https://www.npmjs.com/package/js-cookie
     import Cookies from 'js-cookie'
-    
-
     import { onMounted } from 'vue';
     import {urlAction,urlImg} from "../js/common.ts"
     import {SubmitRegister} from "../js/register"
