@@ -53,7 +53,8 @@ window.myp = function () {
 <template>
   <div class="head menu">
     <div class="item logo">111111</div>
-    <RouterLink to="/index" class="item index">首页</RouterLink>
+    <RouterLink to="/index" class="item index">找人</RouterLink>
+    <RouterLink to="/index" class="item program">项目</RouterLink>
     <div id="idreglogin" class="reg_login">
       <RouterLink to="/login" class="item login">登录</RouterLink>
       <RouterLink to="/register" class="item register">注册</RouterLink>
@@ -90,7 +91,9 @@ window.myp = function () {
   margin-right: 20px;
 }
 .index,
-.logo {
+.logo,
+.program
+ {
   float: left;
 }
 .register,

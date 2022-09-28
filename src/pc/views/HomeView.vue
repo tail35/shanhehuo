@@ -12,9 +12,17 @@ window.myp();
 
 <template>
   <main>
-    <TheWelcome />
+    <div>
+      <img />
+      <div>
+        名称：
+        擅长：xxx
+        经验：
+        标签：
+      </div>
+    </div>
+
   </main>
 </template>
 <style>
-
 </style>
