@@ -35,15 +35,18 @@ MyResize();
 onMounted(() => {
   window.isLoginFunForHead();
 
-  document.getElementById("idexitlogin").addEventListener("click", () => {
-    console.log("exit");
+  document.getElementById("idexitlogin").addEventListener("click", () => {    
     Cookies.set("isLogin", "false");
     window.isLoginFunForHead();
   });
+
+  //default use home
+  const {ctx,proxy} = getCurrentInstance()
+  proxy.$router.push({name:'home',params: {id:'1'}})
 });
 
 window.myp = function () {
-  console.log("i am app.vue");
+  
 };
 </script>
 
@@ -59,8 +62,9 @@ window.myp = function () {
       <div id="idmine" class="item mine">我的</div>
       <div id="idexitlogin" class="item exitlogin">退出</div>
       <div class="item myheadimg" >182...</div>
+      <RouterLink to="/publish" class="item publish">发布</RouterLink>
     </div>
-    <RouterLink to="/publish" class="item publish">发布</RouterLink>
+    
   </div>
   <RouterView class="content"> </RouterView>
   <div class="footer menu">
@@ -97,7 +101,7 @@ window.myp = function () {
   float: right;
 }
 
-.exitlogin,.mine:hover {
+.exitlogin:hover,.mine:hover,.myheadimg:hover {
   cursor: pointer;
   color: red;
 }
@@ -105,7 +109,7 @@ window.myp = function () {
   /* border-radius: 50%; */
   /* width: 50px;
   height: 50px; */
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 /* content */
 /* .content{

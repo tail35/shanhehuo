@@ -38,17 +38,15 @@ function GetStoken()
         })
         //3.3失败时回调函数
         .catch((err) => {
-            alert('连接服务器失败，请刷新页面尝试！')
-            console.log(err);
+            alert('连接服务器失败，请刷新页面尝试！')            
         });    
 }
 function isLogin()
 {
-    var isLogin = Cookies.get('islogin')
+    var isLogin = Cookies.get('isLogin')
     if(null == isLogin){
-        Cookies.set('isLogin',"false")
-    }
-    Cookies.set('isLogin',"false")
+        Cookies.set('isLogin',"false",{expires: 7})
+    }    
 }
 
 

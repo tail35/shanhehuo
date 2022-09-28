@@ -50,8 +50,7 @@
       var idfrom = document.getElementById('idform')
 
       document.getElementById('stokenid').setAttribute("value",Cookies.get('stoken'))
-      
-      console.log('qq:',document.getElementById('stokenid').value )
+            
 
       idfrom.submit()
     }
@@ -60,8 +59,8 @@
     {
       console.log(data)
       if('res'==data.action && 0==data.code){
-        Cookies.set('isLogin',"true")
-        proxy.$router.push({name:'home',query: {id:'1'}})//query url后跟id,params 是post 刷新丢失id
+        Cookies.set('isLogin',"true",{expires: 7})
+        proxy.$router.push({name:'home',params: {id:'1'}})//query url后跟id,params 是post 刷新丢失id
         
       }else{
         alert(data.msg)
@@ -84,7 +83,7 @@
     window.OnClickImg = function()
     {
       var img = document.getElementById("idimg")
-      console.log(Cookies.get('stoken'))
+      
       img.src = login_urlImg + Math.random() +"&stoken="+Cookies.get('stoken')
       
     }

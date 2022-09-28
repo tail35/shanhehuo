@@ -7,8 +7,7 @@ const {ctx,proxy} = getCurrentInstance()
 isLoginFunForHead()
 
 window.myp();
-// var idreglogin = window.document.getElementById('idreglogin')
-// console.log(idreglogin)
+
 </script>
 
 <template>

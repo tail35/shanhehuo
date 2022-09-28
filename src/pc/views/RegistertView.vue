@@ -57,8 +57,6 @@
       var idfrom = document.getElementById('idform')
 
       document.getElementById('stokenid').setAttribute("value",Cookies.get('stoken'))
-      
-      console.log('qq:',document.getElementById('stokenid').value )
 
       idfrom.submit()
     }
@@ -84,8 +82,7 @@
     }
     window.OnClickImg = function()
     {
-      var img = document.getElementById("idimg")
-      console.log(Cookies.get('stoken'))
+      var img = document.getElementById("idimg")      
       img.src = urlImg + Math.random() +"&stoken="+Cookies.get('stoken')
       
     }
