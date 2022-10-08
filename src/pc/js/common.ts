@@ -9,3 +9,6 @@ export var urlAction:String = "https://"+Domain+":448/register?v="
 //for login
 export var login_urlImg:String = "https://"+Domain+":448/longincode?v="
 export var login_urlAction:String = "https://"+Domain+":448/login?v="
+
+//person list
+export var  personListUrl:String = "https://"+Domain+":448/PersonList?v="
