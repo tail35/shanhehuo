@@ -51,26 +51,28 @@ window.myp = function () {
 </script>
 
 <template>
-  <div class="head menu">
-    <div class="item logo">111111</div>
-    <RouterLink to="/index" class="item index">找人</RouterLink>
-    <RouterLink to="/index" class="item program">项目</RouterLink>
-    <div id="idreglogin" class="reg_login">
-      <RouterLink to="/login" class="item login">登录</RouterLink>
-      <RouterLink to="/register" class="item register">注册</RouterLink>
+  <!-- <div class="maindiv"> -->
+    <div class="head menu">
+      <div class="item logo">111111</div>
+      <RouterLink to="/index" class="item index">找人</RouterLink>
+      <RouterLink to="/index" class="item program">项目</RouterLink>
+      <div id="idreglogin" class="reg_login">
+        <RouterLink to="/login" class="item login">登录</RouterLink>
+        <RouterLink to="/register" class="item register">注册</RouterLink>
+      </div>
+      <div id="idheaddiv" class="login_img">
+        <div id="idmine" class="item mine">我的</div>
+        <div id="idexitlogin" class="item exitlogin">退出</div>
+        <div class="item myheadimg" >182...</div>
+        <RouterLink to="/publish" class="item publish">发布</RouterLink>
+      </div>
+      
     </div>
-    <div id="idheaddiv" class="login_img">
-      <div id="idmine" class="item mine">我的</div>
-      <div id="idexitlogin" class="item exitlogin">退出</div>
-      <div class="item myheadimg" >182...</div>
-      <RouterLink to="/publish" class="item publish">发布</RouterLink>
+    <RouterView class="content"> </RouterView>
+    <div class="footer menu">
+      <div>2222</div>
     </div>
-    
-  </div>
-  <RouterView class="content"> </RouterView>
-  <div class="footer menu">
-    <div>2222</div>
-  </div>
+<!-- </div> -->
 </template>
 
 <style scoped>
@@ -78,12 +80,11 @@ window.myp = function () {
   visibility: visible;
 }
 .head {
+  display: block;
+  height: 80px; 
   width: 1280px;
   border: 1px solid red;
-  margin-top: 0;
-  height: 80px;
-  display: block;
-  z-index: 9999;
+  margin-top: 0;     
   background-color: aliceblue;
 }
 .item {
@@ -122,12 +123,9 @@ window.myp = function () {
 } */
 .footer {
   border: 1px solid red;
-  display: flex;
-  float: bottom;
-  /* left: 0px; */
-  bottom: 0px;
   width: 1280px;
   height: 50px;
+  margin-top: 40px;
   text-align: center;
 }
 </style>

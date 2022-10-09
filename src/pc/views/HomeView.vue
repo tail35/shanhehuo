@@ -16,9 +16,9 @@ onMounted(()=>{
         .get(personListUrl+Math.random())
         //3.2成功时回调函数
         .then((obj) => {
-          var myObj = obj.data
-          //persones = ref(myObj)
-          //console.log("wo:",persones.value )
+          
+          persones.value = ref( obj.data )
+          console.log("wo:",toRaw( persones.value.value ) )
           // var item1 = {}
           // item1.name = "111"
           // var item2 = {}
@@ -46,14 +46,14 @@ onMounted(()=>{
     <!-- <div v-for="item in persones">
     {{item.name}}
     </div> -->
-    <div v-for="(item,index) in persones" >
+    <div v-for="(item,index) in persones.value" >
       <div class="hitem">
         <img class="pphoto" />
         <div class="pitem onediv">
-          <span class="eitem wname">{{item.name}} <span class="isvip">vip</span> <span class="huoyue">上次活跃时间:2022-09-29</span></span>
-          <span class="eitem shanchang" >擅长：<span>xxxx</span></span>
-          <span class="eitem jingyan">经验：<span>xxxx</span></span>
-          <span class="etiem biaoqian">标签：<span>xxxx</span></span>
+          <span class="eitem wname">{{item.name}} <span class="isvip">vip</span> <span class="huoyue">上次活跃时间:{{item.activeTime}}</span></span>
+          <span class="eitem shanchang" >擅长：<span>{{item.beGoodAt}}</span></span>
+          <span class="eitem jingyan">经验：<span>{{item.experience}}</span></span>
+          <span class="etiem biaoqian">标签：<span>{{item.tag}}</span></span>
         </div>
       </div>
     </div>
@@ -86,7 +86,7 @@ onMounted(()=>{
   margin-left: 10px;
 }
 .hmain{
-  height: 100vh;
+  min-height: 100vh;
 }
 .hitem{
   display: flex;
