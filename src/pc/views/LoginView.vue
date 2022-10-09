@@ -71,7 +71,7 @@
         if( e.data.action == "res"){
           window.LoginResult(e.data)
         }
-    },false);//跨域通信，子通知父页面.不能少false,不然收不到。
+    },false);//frame是子,LoginView是父。跨域通信，子通知父页面.不能少false,不然收不到。js 返回window.top.postMessage,ifrmae 里面执行。然后通知message消息。
 
     window.myonload =function(){
 

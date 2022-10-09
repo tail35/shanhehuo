@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import TheWelcome from '@/pc/components/TheWelcome.vue'
-import {ref,toRaw,onMounted,getCurrentInstance} from 'vue'
+import { isTemplateElement } from '@babel/types';
+import {computed,ref,toRaw,onMounted,getCurrentInstance} from 'vue'
 const {ctx,proxy} = getCurrentInstance()
 import axios from 'axios' //dhlu
-import {personListUrl} from "../js/common.ts"
+import {imgUrl,personListUrl} from "../js/common.ts"
 
 //console.log('id:',proxy.$route.query.id )
 isLoginFunForHead()
@@ -39,6 +40,19 @@ onMounted(()=>{
 //     persones.value[1]=item2;
 // }, 2000);
 })
+
+//传参数,计算属性值
+const mytag = computed(() => {
+  return (item)=>{
+    var my = item.tag
+    return my
+  }
+})
+function clickItem( accid ){
+  var qaccid="\""+accid+"\""  
+  proxy.$router.push({name:'PersonDetails',params: {id:qaccid}})//query: url后跟id,params: 是post 刷新丢失id
+}
+
 </script>
 
 <template>
@@ -47,13 +61,13 @@ onMounted(()=>{
     {{item.name}}
     </div> -->
     <div v-for="(item,index) in persones.value" >
-      <div class="hitem">
-        <img class="pphoto" />
+      <div class="hitem" v-on:dblclick="clickItem(item.accid)">
+        <img class="pphoto" v-bind:src="imgUrl+item.img"/>
         <div class="pitem onediv">
           <span class="eitem wname">{{item.name}} <span class="isvip">vip</span> <span class="huoyue">上次活跃时间:{{item.activeTime}}</span></span>
           <span class="eitem shanchang" >擅长：<span>{{item.beGoodAt}}</span></span>
           <span class="eitem jingyan">经验：<span>{{item.experience}}</span></span>
-          <span class="etiem biaoqian">标签：<span>{{item.tag}}</span></span>
+          <span class="etiem biaoqian">标签：<span>{{mytag(item)}}</span></span>
         </div>
       </div>
     </div>
