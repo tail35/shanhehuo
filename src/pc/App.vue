@@ -53,20 +53,36 @@ window.myp = function () {
 <template>
   <!-- <div class="maindiv"> -->
     <div class="head menu">
+      
+      <!-- left menu -->
       <div class="item logo">111111</div>
       <RouterLink to="/index" class="item index">找人</RouterLink>
-      <RouterLink to="/index" class="item program">项目</RouterLink>
+      <RouterLink to="/program" class="item program">项目</RouterLink>
+      <!-- left menu end -->
+
+      <!-- right menu if not login -->
       <div id="idreglogin" class="reg_login">
         <RouterLink to="/login" class="item login">登录</RouterLink>
         <RouterLink to="/register" class="item register">注册</RouterLink>
       </div>
-      <div id="idheaddiv" class="login_img">
-        <div id="idmine" class="item mine">我的</div>
+
+      <!-- if login -->
+      
+      <div id="idheaddiv" class="iflogin">
+        <div id="idtest" class="item test">test</div>
+        <div class="item myinfo">
+          <div id="idmine" class="mine">我的</div>
+          <div class="my_dropmenu">
+            <span>菜单1</span>
+            <span>菜单2</span>
+          </div>
+        </div>
+        
         <div id="idexitlogin" class="item exitlogin">退出</div>
         <div class="item myheadimg" >182...</div>
         <RouterLink to="/publish" class="item publish">发布</RouterLink>
       </div>
-      
+      <!-- if login end -->
     </div>
     <RouterView class="content"> </RouterView>
     <div class="footer menu">
@@ -97,11 +113,13 @@ window.myp = function () {
  {
   float: left;
 }
+.myinfo,
+.test,
 .register,
 .login,
 .publish,
 .myheadimg,
-.exitlogin,.mine {
+.exitlogin {
   float: right;
 }
 
@@ -127,5 +145,33 @@ window.myp = function () {
   height: 50px;
   margin-top: 40px;
   text-align: center;
+}
+
+
+.myinfo{
+  /* 行内元素其内部元素不收到float影响，而在底部换行*/
+  display: inline-block;
+}
+.my_dropmenu {  
+  
+  display: none;
+ }
+ .my_dropmenu span{
+   display: block;   
+   margin-top: 10px;
+ }
+
+ .my_dropmenu span:hover{
+    cursor: pointer;
+    color: green;    
+ }
+
+.myinfo:hover .my_dropmenu {  
+  display: block;
+} 
+
+/*后面元素清楚浮动样式,不然菜单栏样式会影响后面的内容*/
+ .content:after{
+  clear: both;
 }
 </style>

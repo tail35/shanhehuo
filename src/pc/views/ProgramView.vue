@@ -1,17 +1,16 @@
 <template>
   <div class="PersonDetailes">     
-    <div class="phitem">
-      <img class="ppphoto" />
-      <div class="ppitem ponediv">
-        <span class="peitem pwname">名称：xxx <span class="isvip">vip</span> <span class="huoyue">上次活跃时间:2022-09-29</span></span>
-        <span class="peitem pshanchang" >擅长：<span>xxxx</span></span>
-        <span class="petiem pbiaoqian">标签：<span>xxxx</span></span>
-        <span class="peitem pjingyan">经验：</span>
-        <span >xxxx</span>
-      </div>      
+    <div>
+    <img style="width:640px;heidht:480px"/>
     </div>
-    <div>我想找：</div>
-    <span>xxxxx</span>
+    <div>绘本项目</div>
+    <span>北京|300~500万|20人</span> <span>200人浏览</span> <span>2022-10-11发布</span>
+    <div>项目很好，市场不想后效</div>
+    <div>本项目找技术合伙人</div>
+    <span>牛逼技术</span>
+    <div>本项目找营销合伙人</div>
+    <span>牛逼营销技术</span>
+    
     <div>我想加入：</div>
     <span>xxxxx</span>
     <div>我的项目</div>

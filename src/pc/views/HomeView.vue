@@ -72,7 +72,8 @@ function clickItem( accid ){
       </div>
     </div>
 
-    <!-- <div class="hitem">
+    <!-- 
+      <div class="hitem">
       <img class="pphoto" />
       <div class="pitem onediv">
         <span class="eitem wname">名称：xxx <span class="isvip">vip</span> <span class="huoyue">上次活跃时间:2022-09-29</span></span>
