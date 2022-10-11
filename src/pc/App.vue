@@ -3,6 +3,7 @@ import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
 import { onMounted, getCurrentInstance } from "vue";
 import Cookies from "js-cookie";
+const {ctx,proxy} = getCurrentInstance()
 
 function MyResize() {
   // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
@@ -48,6 +49,13 @@ onMounted(() => {
 window.myp = function () {
   
 };
+function MyInfoClick(){
+  proxy.$router.push({name:'home',params: {id:'1'}})//query url后跟id,params 是post 刷新丢失id
+}
+function MyProgramClick(){
+  proxy.$router.push({name:'home',params: {id:'1'}})//query url后跟id,params 是post 刷新丢失id
+}
+
 </script>
 
 <template>
@@ -73,8 +81,8 @@ window.myp = function () {
         <div class="item myinfo">
           <div id="idmine" class="mine">我的</div>
           <div class="my_dropmenu">
-            <span>菜单1</span>
-            <span>菜单2</span>
+            <span v-on:click="MyInfoClick">我的信息</span>
+            <span v-on:click="MyProgramClick">我的项目</span>
           </div>
         </div>
         
