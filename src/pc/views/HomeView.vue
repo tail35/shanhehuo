@@ -12,12 +12,8 @@ window.myp();
 var persones=ref([])
 
 onMounted(()=>{
-  axios
-        //3.1url地址
-        .get(personListUrl+Math.random())
-        //3.2成功时回调函数
+  axios.get(personListUrl+Math.random())
         .then((obj) => {
-          
           persones.value = ref( obj.data )
           console.log("wo:",toRaw( persones.value.value ) )
           // var item1 = {}
@@ -26,9 +22,7 @@ onMounted(()=>{
           // item2.name = "222"
           // persones.value[0]=item1;
           // persones.value[1]=item2;
-        })
-        //3.3失败时回调函数
-        .catch((err) => {
+        }).catch((err) => {
             alert('连接服务器失败，请刷新页面尝试！')
         });
 //   setTimeout(() =>{
@@ -50,7 +44,7 @@ const mytag = computed(() => {
 })
 function clickItem( accid ){
   var qaccid="\""+accid+"\""  
-  proxy.$router.push({name:'PersonDetails',params: {id:qaccid}})//query: url后跟id,params: 是post 刷新丢失id
+  proxy.$router.push({name:'PersonDetails',query: {id:qaccid}})//query: url后跟id,params: 是post 刷新丢失id
 }
 
 </script>

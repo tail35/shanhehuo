@@ -4,11 +4,14 @@ import RegisterView from '../views/RegistertView.vue'
 import LoginView from '../views/LoginView.vue'
 import PersonDetailsView from '../views/PersonDetailsView.vue'
 import ProgramView from '../views/ProgramView.vue'
+import MyInfoEditView from '../views/MyInfoEditView.vue'
+import MyProgramEditView from '../views/MyProgramEditView.vue'
+
 
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
+  routes: [    
     {
       path: '/index',
       name: 'home',
@@ -47,7 +50,16 @@ const router = createRouter({
       name: 'PersonDetails',
       component: PersonDetailsView
     },    
-    
+    {
+      path: '/MyInfoEditView',
+      name: 'MyInfoEditView',
+      component: MyInfoEditView
+    },
+    {
+      path: '/MyProgramEditView',
+      name: 'MyProgramEditView',
+      component: MyProgramEditView
+    },
   ]
 })
 

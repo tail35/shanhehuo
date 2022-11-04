@@ -48,12 +48,12 @@ onMounted(() => {
 
 window.myp = function () {
   
-};
+}
 function MyInfoClick(){
-  proxy.$router.push({name:'home',params: {id:'1'}})//query url后跟id,params 是post 刷新丢失id
+  proxy.$router.push({name:'MyInfoEditView',params: {id:'1'}})//query url后跟id,params 是post 刷新丢失id
 }
 function MyProgramClick(){
-  proxy.$router.push({name:'home',params: {id:'1'}})//query url后跟id,params 是post 刷新丢失id
+  proxy.$router.push({name:'MyProgramEditView',params: {id:'1'}})//query url后跟id,params 是post 刷新丢失id
 }
 
 </script>
@@ -64,7 +64,7 @@ function MyProgramClick(){
       
       <!-- left menu -->
       <div class="item logo">111111</div>
-      <RouterLink to="/index" class="item index">找人</RouterLink>
+      <RouterLink to="/index" class="item index">合伙人</RouterLink>
       <RouterLink to="/program" class="item program">项目</RouterLink>
       <!-- left menu end -->
 
