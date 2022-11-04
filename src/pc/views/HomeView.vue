@@ -15,7 +15,7 @@ onMounted(()=>{
   axios.get(personListUrl+Math.random())
         .then((obj) => {
           persones.value = ref( obj.data )
-          console.log("wo:",toRaw( persones.value.value ) )
+          //console.log("wo:",toRaw( persones.value.value ) )
           // var item1 = {}
           // item1.name = "111"
           // var item2 = {}
@@ -42,9 +42,8 @@ const mytag = computed(() => {
     return my
   }
 })
-function clickItem( accid ){
-  var qaccid="\""+accid+"\""  
-  proxy.$router.push({name:'PersonDetails',query: {id:qaccid}})//query: url后跟id,params: 是post 刷新丢失id
+function clickItem( accid ){  
+  proxy.$router.push({name:'PersonDetails',query: {id:accid}})//query: url后跟id,params: 是post 刷新丢失id
 }
 
 </script>

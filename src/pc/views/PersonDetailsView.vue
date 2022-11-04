@@ -1,14 +1,14 @@
 <template>
   <div class="PersonDetailes">     
     <div class="phitem">
-      <img class="ppphoto" />
+      <img class="ppphoto"  v-bind:src="imgUrl+personDetail.value.value.imgurl" />
       <div class="ppitem ponediv">
         <span class="peitem pwname">名称：xxx <span class="isvip">vip</span> <span class="huoyue">上次活跃时间:2022-09-29</span></span>
         <span class="peitem pshanchang" >擅长：<span>xxxx</span></span>
         <span class="petiem pbiaoqian">标签：<span>xxxx</span></span>
         <span class="peitem pjingyan">经验：</span>
         <span >xxxx</span>
-      </div>      
+      </div>
     </div>
     <div>项目描述：</div>
     <span>1.xxx。2.xxxx 3.xxxx</span>
@@ -26,28 +26,35 @@
 <script setup lang="ts">
     //https://www.npmjs.com/package/js-cookie
     import Cookies from 'js-cookie'
-    import { onMounted,getCurrentInstance} from 'vue';
+    import {computed,ref,toRaw,onMounted,getCurrentInstance} from 'vue'
     import { useRoute } from 'vue-router';
-    import {login_urlAction,login_urlImg} from "../js/common.ts"
+    import {imgUrl,OnePersonDetailsUrl} from "../js/common.ts"
     import {SubmitRegister} from "../js/register"
     import axios from 'axios' //dhlu
     const {ctx,proxy} = getCurrentInstance()    
+    var personDetail=ref([])
 
     window.myonload =function(){
       
     }
+
     // 生命周期钩子
-    onMounted(() => {      
+    onMounted(() => {     
+      //person base info 
       var id= proxy.$router.currentRoute.value.query.id
-      axios.get(personListUrl+Math.random())
+      let curl = OnePersonDetailsUrl+Math.random()+"&accid="+id 
+      console.log('url:',curl)
+      axios.get( OnePersonDetailsUrl+Math.random()+"&accid="+id )
         .then((obj) => {          
-          persones.value = ref( obj.data )
-          console.log("wo:",toRaw( persones.value.value ) )
+          personDetail.value = ref( obj.data )
+          console.log("detail:",toRaw( personDetail.value.value ) )
         }).catch((err) => {
             alert('连接服务器失败，请刷新页面尝试！')
         });
 
-    });
+      
+
+    });//end onMounted
 </script>
 <style>
 .PersonDetailes{
