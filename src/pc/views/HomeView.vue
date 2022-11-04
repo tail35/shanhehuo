@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import TheWelcome from '@/pc/components/TheWelcome.vue'
 import { isTemplateElement } from '@babel/types';
-import {computed,ref,toRaw,onMounted,getCurrentInstance} from 'vue'
+import {computed,ref,reactive,toRaw,onMounted,getCurrentInstance} from 'vue'
 const {ctx,proxy} = getCurrentInstance()
 import axios from 'axios' //dhlu
 import {imgUrl,personListUrl} from "../js/common.ts"
@@ -9,30 +9,16 @@ import {imgUrl,personListUrl} from "../js/common.ts"
 //console.log('id:',proxy.$route.query.id )
 isLoginFunForHead()
 window.myp();
-var persones=ref([])
+var persones=reactive([])
 
 onMounted(()=>{
   axios.get(personListUrl+Math.random())
         .then((obj) => {
-          persones.value = ref( obj.data )
-          //console.log("wo:",toRaw( persones.value.value ) )
-          // var item1 = {}
-          // item1.name = "111"
-          // var item2 = {}
-          // item2.name = "222"
-          // persones.value[0]=item1;
-          // persones.value[1]=item2;
+          persones.value = obj.data
+          console.log('plist:',persones.value)
         }).catch((err) => {
             alert('连接服务器失败，请刷新页面尝试！')
         });
-//   setTimeout(() =>{
-//     var item1 = {}
-//     item1.name = "111"
-//     var item2 = {}
-//     item2.name = "222"
-//     persones.value[0]=item1;
-//     persones.value[1]=item2;
-// }, 2000);
 })
 
 //传参数,计算属性值
@@ -55,7 +41,7 @@ function clickItem( accid ){
     </div> -->
     <div v-for="(item,index) in persones.value" >
       <div class="hitem" v-on:dblclick="clickItem(item.accid)">
-        <img class="pphoto" v-bind:src="imgUrl+item.img"/>
+        <img class="pphoto" v-bind:src="imgUrl+item.imgurl"/>
         <div class="pitem onediv">
           <span class="eitem wname">{{item.name}} <span class="isvip">vip</span> <span class="huoyue">上次活跃时间:{{item.activeTime}}</span></span>
           <span class="eitem shanchang" >擅长：<span>{{item.beGoodAt}}</span></span>
