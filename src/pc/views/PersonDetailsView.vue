@@ -33,7 +33,7 @@
           //     //console.log(k, v);
           // });          
           Object.assign(personDetail, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-
+          console.log('pdata:',obj.data)
         }).catch((err) => {
             alert('连接服务器失败，请刷新页面尝试！')
         });
@@ -43,9 +43,13 @@
   <div class="PersonDetailes">
     <div class="phitem">
       <!-- <h1>{{ personDetail.imgurl }}</h1> -->
-      <img class="ppphoto"  v-bind:src="imgUrl+personDetail.imgurl"/>
+      <img class="headpho"  v-bind:src="imgUrl+personDetail.imgurl"/>
       <div class="ppitem ponediv">
-        <span class="peitem pwname">名称：xxx <span class="isvip">vip</span> <span class="huoyue">上次活跃时间:2022-09-29</span></span>
+        <span class="peitem pwname">名称：{{personDetail.name}} </span>
+        <span class="pisvip">vip:{{personDetail.isvip}}</span> 
+        <span class="phuoyue">上次活跃时间:{{personDetail.activeTime}}</span>
+        
+        <span>是否实名认证：{{personDetail.is_identified}}</span>
         <span class="peitem pshanchang" >擅长：<span>xxxx</span></span>
         <span class="petiem pbiaoqian">标签：<span>xxxx</span></span>
         <span class="peitem pjingyan">经验：</span>
@@ -66,7 +70,6 @@
 </template>
 <style>
 .PersonDetailes{
-
   min-height: 100vh;
   border: 1px solid indianred;
 }
@@ -74,8 +77,10 @@
   clear: both;
   display: block;
 }
-.pphoto{
-  width: 180px;
+.headpho{
   height: 101px;
+  width: 180px;  
+  border: 1px solid green;
+  border-radius: 8%;
 }
 </style>
