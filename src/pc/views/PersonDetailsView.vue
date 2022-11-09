@@ -41,21 +41,22 @@
 </script>
 <template>
   <div class="PersonDetailes">
-    <div class="phitem">
+    <div class="pbase">
       <!-- <h1>{{ personDetail.imgurl }}</h1> -->
-      <img class="headpho"  v-bind:src="imgUrl+personDetail.imgurl"/>
-      <div class="ppitem ponediv">
-        <span class="peitem pwname">名称：{{personDetail.name}} </span>
-        <span class="pisvip">vip:{{personDetail.isvip}}</span> 
-        <span class="phuoyue">上次活跃时间:{{personDetail.activeTime}}</span>
-        
-        <span>是否实名认证：{{personDetail.is_identified}}</span>
-        <span class="peitem pshanchang" >擅长：<span>xxxx</span></span>
-        <span class="petiem pbiaoqian">标签：<span>xxxx</span></span>
-        <span class="peitem pjingyan">经验：</span>
-        <span >xxxx</span>
-      </div>
+      <img class="headpho"  v-bind:src="imgUrl+personDetail.imgurl"/>      
+      <span class="pname">名称：{{personDetail.name}} </span>
+      <span class="industry">行业：{{personDetail.industry}}</span>
+      <span class="isvip">vip:{{personDetail.isvip}}</span> 
+      <div class="activeTime">上次活跃:&nbsp;{{personDetail.activeTime}}</div>        
+      <span class="identified">实名认证：{{personDetail.is_identified?"是":"否"}}</span>
+      <span class="province_name">城市：{{personDetail.province_name}}.{{personDetail.city_name}}</span>
+      
+      <div class="tag">创业标签：{{personDetail.tag}}</div>
     </div>
+    
+    <div class="simple_introduce">简介：{{personDetail.simple_introduce}}</div>
+    <span>我需要合伙人：{{personDetail.need}}</span>
+    <span>我想加入：{{personDetail.want_join}}</span>
     <div>项目描述：</div>
     <span>1.xxx。2.xxxx 3.xxxx</span>
     <div>联系方式:</div>
@@ -70,17 +71,37 @@
 </template>
 <style>
 .PersonDetailes{
+  clear: both;
   min-height: 100vh;
   border: 1px solid indianred;
 }
-.pjingyan{
-  clear: both;
-  display: block;
+.pbase{
+  display: float;  
 }
+
 .headpho{
+  float: left;
   height: 101px;
   width: 180px;  
+  margin-right: 10px;
   border: 1px solid green;
   border-radius: 8%;
 }
+
+.province_name,.pname{
+  margin-right: 10px;
+}
+.isvip,province_name{
+  margin-left: 10px;
+}
+.activeTime{
+
+}
+.tag{
+
+}
+.simple_introduce{
+  clear: both;
+}
+
 </style>
