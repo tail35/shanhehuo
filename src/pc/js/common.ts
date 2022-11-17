@@ -15,3 +15,7 @@ export var  personListUrl:String = "https://"+Domain+":448/PersonList?v="
 export var  imgUrl:String = "https://"+Domain+":448/shanstatic/"
 
 export var  OnePersonDetailsUrl:String = "https://"+Domain+":448/OnePersonDetails?v="
+
+export var  SimpleProgramsUrl:String = "https://"+Domain+":448/SimplePrograms?v="
+export var  ContactUrl:String = "https://"+Domain+":448/ContactControll?v="
+
