@@ -4,12 +4,18 @@
     //
     //https://www.npmjs.com/package/js-cookie
     import Cookies from 'js-cookie'
-    import {computed,ref,reactive,toRaw,onMounted,getCurrentInstance} from 'vue'
+    import {computed,ref,
+      reactive,toRaw,
+      onMounted,getCurrentInstance
+      } from 'vue'
     import { useRoute } from 'vue-router';
     import {
       imgUrl,OnePersonDetailsUrl,
       SimpleProgramsUrl,
-      ContactUrl
+      ContactUrl,
+      WorkUrl,
+      EducationUrl,
+      MessageUrl
     } from "../js/common.ts"
     import {SubmitRegister} from "../js/register"
     import axios from 'axios' //dhlu
@@ -18,6 +24,9 @@
     let personDetail=reactive({}) //如果对象变了，就失去了响应性。只能把值赋给原有代理。
     let programs = reactive({})
     let contact = reactive({})
+    let work = reactive({})
+    let education = reactive({})
+    let message = reactive({})
     window.myonload =function(){
     }
 
@@ -68,9 +77,44 @@
               alert('连接服务器失败，请刷新页面尝试！')
           });
       }
+      function GetWork(){
+        var id= proxy.$router.currentRoute.value.query.id
+        let curl = WorkUrl+Math.random()+"&accid="+id
+        axios.get(curl)
+          .then((obj) =>{
+            Object.assign(work, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+            console.log('work:', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+          }).catch((err) => {
+              alert('连接服务器失败，请刷新页面尝试！')
+          });
+      }
+      function GetEducation(){
+        var id= proxy.$router.currentRoute.value.query.id
+        let curl = EducationUrl+Math.random()+"&accid="+id
+        axios.get(curl)
+          .then((obj) => {
+            Object.assign(education, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+            console.log('education:', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+          }).catch((err) => {
+              alert('连接服务器失败，请刷新页面尝试！')
+          });
+      }
+      function GetEducation(){
+        var id= proxy.$router.currentRoute.value.query.id
+        let curl =MessageUrl +Math.random()+"&accid="+id
+        axios.get(curl)
+          .then((obj) => {
+            Object.assign(message, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+            console.log('message:', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+          }).catch((err) => {
+              alert('连接服务器失败，请刷新页面尝试！')
+          });
+      }
       GetPersonDetails()
       GetPrograms()
       GetContact()
+      GetWork()
+      GetEducation()
 
     });//end onMounted
 </script>
@@ -94,20 +138,54 @@
 
     <div v-for="(item,index) in programs" >
     <div class="firstdiv">项目[{{item.name}}]：</div>
-    <div>正在找[]合伙人：</div>
-    <div>1.要求吃苦耐劳。2.有奉献精神。</div>
+    <div>正在找[{{item.partnership_name}}]合伙人：</div>
+    <div>{{item.join_condition}}。</div>
     <!-- <span></span><span>xxxx</span> <span>共10人</span> <span>想加入</span> -->
     <div class="lstdiv"></div>
     </div>
-    
+
+    <div>工作经历:</div>
+    <div v-for="(item,index) in work" >    
+    <div>公司名称：{{item.company_name}}</div>
+    <div>担任职位：{{item.jobname}}</div>
+    <div>服务时间：{{item.start_time}}--{{item.end_time}}</div>
+    <div>工作内容：{{item.job_describe}}</div>
+    <br>
+    </div>
+
+    <div>教育经历:</div>
+    <div v-for="(item,index) in education" >    
+    <div>学校名称：{{item.name}}</div>
+    <div>学位:{{item.educational_background}}</div>
+    <div>学习时间：{{item.start_time}}--{{item.end_time}}</div>
+    <div>专业名称：{{item.major}}</div>
+    <div>取得成绩：{{item.education_describe}}</div>
+    <br>
+    </div>
+
     <div>联系方式:</div>
-    <span>wq:xxxx</span>
-   
+    <div>微信:{{contact.weixin}}</div>
+    <div>qq:{{contact.qq}}</div>
+    <div>电话:{{contact.tel}}</div>
+    <div>网站:{{contact.web}}</div>
+    <div>微博:{{contact.weibo}}</div>
+    <br>
+    
     <div>留言:</div>
-    <span>时间：xxxx留言：xxx  </span>
-    <span>时间：xxxx留言：xxx  </span>
-    <area />
     <button>发送</button>
+    <textarea class='idmessage'/>
+    
+    <div v-for="(item,index) in message" >
+      <div>
+        <span>
+          <img class="msg_head" v-bind:src="imgUrl+item.imgurl">
+          <span class="mname">{{item.name}}</span>
+          <span class="mtime">{{item.create_time}}</span>
+        </span>
+      </div>
+      <div class="msg_message">{{item.message}}</div>
+    </div>
+
   </div>
 </template>
 <style>
@@ -149,5 +227,25 @@
 }
 .lstdiv{
   margin-bottom: 10px;
+}
+.idmessage{
+  width: 400px;
+  height:50px;
+  border: 1px solid red;
+  display: block;
+  margin-bottom: 10px;
+}
+.msg_head
+{
+  width: 20px;
+  height: 11px;
+  border: 1px solid greenyellow;
+  margin-right: 10px;
+}
+.mname{
+  margin-right: 10px;
+}
+.msg_message{
+  margin-left: 20px;
 }
 </style>

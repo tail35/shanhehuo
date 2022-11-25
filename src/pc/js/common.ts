@@ -19,3 +19,8 @@ export var  OnePersonDetailsUrl:String = "https://"+Domain+":448/OnePersonDetail
 export var  SimpleProgramsUrl:String = "https://"+Domain+":448/SimplePrograms?v="
 export var  ContactUrl:String = "https://"+Domain+":448/ContactControll?v="
 
+export var  WorkUrl:String = "https://"+Domain+":448/WorkControll?v="
+export var  EducationUrl:String = "https://"+Domain+":448/EducationControll?v="
+
+export var  MessageUrl:String = "https://"+Domain+":448/MessageControll?v="
+
