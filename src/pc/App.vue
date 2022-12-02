@@ -65,7 +65,7 @@ function MyProgramClick(){
       <!-- left menu -->
       <div class="item logo">111111</div>
       <RouterLink to="/index" class="item index">合伙人</RouterLink>
-      <RouterLink to="/program" class="item program">项目</RouterLink>
+      <RouterLink to="/ProgramList" class="item program">项目</RouterLink>
       <!-- left menu end -->
 
       <!-- right menu if not login -->

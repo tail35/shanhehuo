@@ -23,4 +23,8 @@ export var  WorkUrl:String = "https://"+Domain+":448/WorkControll?v="
 export var  EducationUrl:String = "https://"+Domain+":448/EducationControll?v="
 
 export var  MessageUrl:String = "https://"+Domain+":448/MessageControll?v="
+export var  ProgramListControllUrl:String = "https://"+Domain+":448/ProgramListControll?v="
+export var  ProgramDetailControllUrl:String = "https://"+Domain+":448/ProgramDetailControll?v="
+
+export var  ProgramImgeControllUrl:String = "https://"+Domain+":448/ProgramImgeControll?v="
 

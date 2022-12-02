@@ -3,11 +3,10 @@ import HomeView from '../views/HomeView.vue'
 import RegisterView from '../views/RegistertView.vue'
 import LoginView from '../views/LoginView.vue'
 import PersonDetailsView from '../views/PersonDetailsView.vue'
-import ProgramView from '../views/ProgramView.vue'
+import ProgramDetailsView from '../views/ProgramDetailsView.vue'
 import MyInfoEditView from '../views/MyInfoEditView.vue'
 import MyProgramEditView from '../views/MyProgramEditView.vue'
-
-
+import ProgramList from '../views/ProgramList.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,10 +17,15 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/program',
-      name: 'program',
-      component: ProgramView
-    },    
+      path: '/ProgramDetailsView',
+      name: 'ProgramDetailsView',
+      component: ProgramDetailsView
+    },
+    {
+      path: '/ProgramList',
+      name: 'ProgramList',
+      component: ProgramList
+    },
     {
       path: '/about',
       name: 'about',
