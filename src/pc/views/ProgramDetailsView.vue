@@ -1,9 +1,76 @@
+
+<script setup lang="ts">
+//https://www.npmjs.com/package/js-cookie
+import Cookies from 'js-cookie'
+import { onMounted,getCurrentInstance,computed,ref,reactive,toRaw} from 'vue';
+
+import { useRoute } from 'vue-router';
+import {imgUrl,login_urlAction,
+  login_urlImg,ProgramDetailControllUrl,
+  ProgramImgeControllUrl
+} from "../js/common.ts"
+import {SubmitRegister} from "../js/register"
+import axios from 'axios' //dhlu
+import { objectExpression } from '@babel/types';
+
+const {ctx,proxy} = getCurrentInstance()
+var programDetail = reactive({})
+var programImgesUrls = ref([])//注意对象数据有区别。
+window.myonload =function(){
+
+}
+
+const myurl = computed(() => {
+  return (urlArray)=>{
+    if(urlArray.length){
+      return imgUrl+programImgesUrls.value[0].imgurl
+    }
+    return ""
+  }
+})
+
+// 生命周期钩子
+onMounted(() => {
+  function GetImgesUrl()
+  {
+    //person base info 
+    var programid= proxy.$router.currentRoute.value.query.programid
+    let curl = ProgramImgeControllUrl+Math.random()+"&programid="+programid    
+    console.log('iurl:',curl)
+    axios.get(curl)
+      .then((obj) => {
+        programImgesUrls.value = obj.data //数组是基本类型。用ref
+        console.log('programImgesUrls:',programImgesUrls)
+      }).catch((err) => {
+          alert('连接服务器失败，请刷新页面尝试！')
+      });
+  }
+   function GetProgramDetail()
+   {
+    //person base info 
+    var programid= proxy.$router.currentRoute.value.query.programid
+    let curl = ProgramDetailControllUrl+Math.random()+"&programid="+programid    
+    
+    axios.get(curl)
+      .then((obj) => {
+        //如果programDetail 名字错，会导致无法走catch分句。
+        Object.assign(programDetail, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+        //console.log('programDetail:',obj.data)
+      }).catch((err) => {
+          alert('连接服务器失败，请刷新页面尝试！')
+      });          
+   }
+   GetImgesUrl()
+   GetProgramDetail()
+});
+</script>
 <template>
   <div class="PersonDetailes">     
     <div>
-    <img style="width:640px;heidht:480px"/>
+    <img v-bind:src="myurl(programImgesUrls)" id="idProgramImg"  class="programimg" />    
     </div>
-    <div>绘本项目</div>
+    
+    <div>{{programDetail.name}}</div>
     <span>北京|300~500万|20人</span> <span>200人浏览</span> <span>2022-10-11发布</span>
     <div>项目很好，市场不想后效</div>
     <div>本项目找技术合伙人</div>
@@ -26,61 +93,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
-    //https://www.npmjs.com/package/js-cookie
-    import Cookies from 'js-cookie'
-    import { onMounted,getCurrentInstance,computed,ref,reactive,toRaw} from 'vue';
-   
-    import { useRoute } from 'vue-router';
-    import {login_urlAction,
-      login_urlImg,ProgramDetailControllUrl,
-      ProgramImgeControllUrl
-    } from "../js/common.ts"
-    import {SubmitRegister} from "../js/register"
-    import axios from 'axios' //dhlu
 
-    const {ctx,proxy} = getCurrentInstance()
-    let program = reactive({})
-    let programImgesUrls = reactive({})
-    window.myonload =function(){
-
-    }
-
-    // 生命周期钩子
-    onMounted(() => {
-      function GetImgesUrl()
-      {
-        //person base info 
-        var programid= proxy.$router.currentRoute.value.query.programid
-        let curl = ProgramImgeControllUrl+Math.random()+"&programid="+programid    
-        
-        axios.get(curl)
-          .then((obj) => {        
-            Object.assign(programImgesUrls, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-            console.log('programImgesUrls:',obj.data)
-          }).catch((err) => {
-              alert('连接服务器失败，请刷新页面尝试！')
-          });   
-      }
-       function GetProgram()
-       {
-        //person base info 
-        var programid= proxy.$router.currentRoute.value.query.programid
-        let curl = ProgramDetailControllUrl+Math.random()+"&programid="+programid    
-        
-        axios.get(curl)
-          .then((obj) => {        
-            Object.assign(program, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-            console.log('program:',obj.data)
-          }).catch((err) => {
-              alert('连接服务器失败，请刷新页面尝试！')
-          });          
-       }
-       GetImgesUrl()
-       GetProgram()
-
-    });
-</script>
 <style>
 .PersonDetailes{
 
@@ -91,5 +104,9 @@
   clear: both;
   display: block;
 }
-
+.programimg{
+  width:300px;
+  height:169px;
+  border: 1px solid red;
+}
 </style>
