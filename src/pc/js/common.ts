@@ -28,3 +28,6 @@ export var  ProgramDetailControllUrl:String = "https://"+Domain+":448/ProgramDet
 
 export var  ProgramImgeControllUrl:String = "https://"+Domain+":448/ProgramImgeControll?v="
 
+export var  PartnerNamesControllUrl:String = "https://"+Domain+":448/PartnerNamesControll?v="
+
+
