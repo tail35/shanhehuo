@@ -60,6 +60,7 @@
       console.log(data)
       if('res'==data.action && 0==data.code){
         Cookies.set('isLogin',"true",{expires: 7})
+        Cookies.set('myaccid',document.getElementById('idphone').value,{expires: 7})
         proxy.$router.push({name:'home',params: {id:'1'}})//query url后跟id,params 是post 刷新丢失id
         
       }else{

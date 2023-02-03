@@ -2,24 +2,31 @@
 <script setup lang="ts">
 //https://www.npmjs.com/package/js-cookie
 import Cookies from 'js-cookie'
-import { onMounted,getCurrentInstance,computed,ref,reactive,toRaw} from 'vue';
+import {inject,onMounted,getCurrentInstance,computed,ref,reactive,toRaw} from 'vue';
 
 import { useRoute } from 'vue-router';
 import {imgUrl,login_urlAction,
   login_urlImg,ProgramDetailControllUrl,
-  ProgramImgeControllUrl,PartnerNamesControllUrl
+  ProgramImgeControllUrl,PartnerNamesControllUrl,
+  InterestedControllUrl,OnePersonDetailsUrl,
+  ProgramDetailByAccidControllUrl
 } from "../js/common.ts"
 import {SubmitRegister} from "../js/register"
 import axios from 'axios' //dhlu
 import { objectExpression } from '@babel/types';
+
+const UpdateKey = inject('UpdateKey');
+
 
 const {ctx,proxy} = getCurrentInstance()
 
 var programDetail = reactive({})
 var programImgesUrls = ref([])//注意对象数据有区别。
 var PartnerNames = ref([])
+var Interested = ref([])
+var personDetail = reactive({})
+var programDetailByAccid = ref([])
 window.myonload =function(){
-
 }
 
 const myurl = computed(() => {
@@ -31,24 +38,66 @@ const myurl = computed(() => {
   }
 })
 
+function OnDetailsButton(){
+  var accid = proxy.$router.currentRoute.value.query.accid
+  var programid= proxy.$router.currentRoute.value.query.programid
+
+  proxy.$router.push({name:'JoinDetails',query: {accid:accid,programid:programid}})//query: url后跟id,params: 是post 刷新丢失id
+  //console.log("OnDetailsButton");
+}
 
 
+function OnJoinInput(){
+  var accid = proxy.$router.currentRoute.value.query.accid //programaccid
+  var programid= proxy.$router.currentRoute.value.query.programid
+  proxy.$router.push({name:'JoinInput',query: {accid:accid,programid:programid}})//query: url后跟id,params: 是post 刷新丢失id
+  //console.log("OnDetailsButton");
+}
+
+function OnLookupInfo()
+{    
+    proxy.$router.push({name:'PersonDetails',query: {accid:personDetail.accid}})//query: url后跟id,params: 是post 刷新丢失accid    
+}
+
+function OnClicklstDiv(item)
+{  
+  proxy.$router.push({name:'ProgramDetailsView',query:{accid:1,programid:1,wo:Math.random()}})//query: url后跟id,params: 是post 刷新丢失id  
+  proxy.$forceUpdate()
+  UpdateKey()  
+  console.log(item.accid,item.programid);
+}
 // 生命周期钩子
 onMounted(() => {
   function GetImgesUrl()
-  {
+  {    
     //person base info 
     var programid= proxy.$router.currentRoute.value.query.programid
     let curl = ProgramImgeControllUrl+Math.random()+"&programid="+programid    
-    console.log('iurl:',curl)
+    console.log('111iurl:',curl)
     axios.get(curl)
       .then((obj) => {
         programImgesUrls.value = obj.data //数组是基本类型。用ref
-        console.log('programImgesUrls:',programImgesUrls)
+        console.log('111programImgesUrls:',programImgesUrls)
       }).catch((err) => {
           alert('连接服务器失败，请刷新页面尝试！')
       });
   }
+
+  function GetProgramDetailByAccid()
+  {
+    //person base info 
+    var accid= proxy.$router.currentRoute.value.query.accid
+    let curl = ProgramDetailByAccidControllUrl+Math.random()+"&accid="+accid
+    
+    axios.get(curl)
+      .then((obj) => {
+        programDetailByAccid.value = obj.data
+        console.log('programDetailByAccid:',programDetailByAccid)
+      }).catch((err) => {
+          alert('连接服务器失败，请刷新页面尝试！')
+      });
+  }
+
    function GetProgramDetail()
    {
     //person base info 
@@ -59,7 +108,7 @@ onMounted(() => {
       .then((obj) => {
         //如果programDetail 名字错，会导致无法走catch分句。
         Object.assign(programDetail, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-        console.log('programDetail:',obj.data)
+        //console.log('programDetail:',obj.data)
       }).catch((err) => {
           alert('连接服务器失败，请刷新页面尝试！')
       });          
@@ -69,26 +118,58 @@ onMounted(() => {
     //person base info 
     var programid= proxy.$router.currentRoute.value.query.programid
     let curl = PartnerNamesControllUrl+Math.random()+"&programid="+programid    
-    console.log('PartnerNamesurl:',curl)
+    //console.log('PartnerNamesurl:',curl)
     axios.get(curl)
       .then((obj) => {
         //如果programDetail 名字错，会导致无法走catch分句。
         PartnerNames.value = obj.data //数组是基本类型。用ref
-        console.log('PartnerNames:',obj.data)
+        //console.log('PartnerNames:',obj.data)
       }).catch((err) => {
           alert('连接服务器失败，请刷新页面尝试！')
       });          
    }
-   
+   function GetInterestedControll()
+   {
+    //person base info 
+    var accid= proxy.$router.currentRoute.value.query.accid
+    //console.log('PartnerNamesurlaccid:',accid,proxy.$router.currentRoute.value.query.programid) 
+    let curl = InterestedControllUrl+Math.random()+"&accid="+accid    
+    //console.log('PartnerNamesurl:',curl)    
+    axios.get(curl)
+      .then((obj) => {
+        //如果programDetail 名字错，会导致无法走catch分句。
+        Interested.value = obj.data //数组是基本类型。用ref
+        //console.log('Interested:',obj.data)
+      }).catch((err) => {
+          alert('连接服务器失败，请刷新页面尝试！')
+      });          
+   }
+   function GetPersonDetails(){
+        //person base info 
+        var accid= proxy.$router.currentRoute.value.query.accid
+        let curl = OnePersonDetailsUrl+Math.random()+"&accid="+accid
+        
+        axios.get(curl)
+          .then((obj) => {
+            Object.assign(personDetail, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+            //console.log('ppersonDetail:',obj.data)
+          }).catch((err) => {
+              alert('连接服务器失败，请刷新页面尝试！')
+          });
+      }
+
    GetImgesUrl()
    GetProgramDetail()
    GetPartnerNanmes()
+   GetInterestedControll()
+   GetPersonDetails()
+   GetProgramDetailByAccid()
 });
 </script>
 <template>
   <div class="PersonDetailes">     
     <div>
-    <img v-bind:src="myurl(programImgesUrls)" id="idProgramImg"  class="programimg" />    
+      <img v-bind:src="myurl(programImgesUrls)" id="idProgramImg"  class="programimg" />    
     </div>
     
     <div>项目名称:{{programDetail.name}}</div>
@@ -104,14 +185,23 @@ onMounted(() => {
     </div>
     <br>
     
-    <div>xxx 共5人想加入 <button>详情</button>  <button>我想加入</button></div>
+    <div>
+      <span v-for="(item,index) in Interested">
+        <img class="inImg" v-bind:src="imgUrl+item.imgurl" />
+      </span>
+      共{{Interested.length}}人想加入&nbsp
+      <button class="bdetails" v-on:click="OnDetailsButton()">详情</button>&nbsp&nbsp
+      <button v-on:click="OnJoinInput()">我想加入</button>
+    </div>
     <br>
 
-    <div>本项目由[xxx]发布&nbsp&nbsp<button >联系他 </button></div>
-    <div>[xxx]的所有项目如下：</div>
-    <div><img /><span>xxxx项目</span></div>
-    <div><img /><span>xxxx项目</span></div>
-    <div><img /><span>xxxx项目</span></div>
+    <div>本项目由[{{personDetail.name}}]发布&nbsp&nbsp<button v-on:click="OnLookupInfo()">查看他信息 </button></div>
+    <div>他的所有项目如下：</div>
+    <div v-for="(item,index) in programDetailByAccid" >
+      <div class="lstdiv" v-on:click="OnClicklstDiv(item)">
+        <img v-bind:src="imgUrl+item.imgurl" class="lstimg" />&nbsp&nbsp<span>{{item.name}}</span>
+      </div>
+    </div>
     <br>
     
     <div>留言:</div>
@@ -121,11 +211,8 @@ onMounted(() => {
     <button>发送</button>
   </div>
 </template>
-
-
 <style>
 .PersonDetailes{
-
   min-height: 100vh;
   border: 1px solid indianred;
 }
@@ -137,5 +224,24 @@ onMounted(() => {
   width:300px;
   height:169px;
   border: 1px solid red;
+}
+.inImg{
+  width: 28px;
+  height: 16px;
+  border-radius: 50px 50px 50px 50px;
+  border: 1px solid red;
+}
+.lstimg{
+  width: 28px;
+  height: 16px;
+}
+.lstdiv{
+  width: fit-content;
+  border: 1px solid red;
+  border-radius: 5px;
+}
+.lstdiv:hover{
+  border-color: aquamarine;
+  border: 2px solid;
 }
 </style>

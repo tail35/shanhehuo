@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Cookies from 'js-cookie'
 import TheWelcome from '@/pc/components/TheWelcome.vue'
 import { isTemplateElement } from '@babel/types';
 import {computed,ref,reactive,toRaw,onMounted,getCurrentInstance} from 'vue'
@@ -15,7 +16,7 @@ onMounted(()=>{
   axios.get(personListUrl+Math.random())
         .then((obj) => {
           persones.value = obj.data
-          console.log('plist:',persones.value)
+          //console.log('plist:',persones.value)
         }).catch((err) => {
             alert('连接服务器失败，请刷新页面尝试！')
         });
@@ -29,6 +30,11 @@ const mytag = computed(() => {
   }
 })
 function clickItem( accid ){  
+    
+  if("false" == Cookies.get('isLogin')){
+    alert("请先登录。谢谢。")
+    return;
+  }
   proxy.$router.push({name:'PersonDetails',query: {id:accid}})//query: url后跟id,params: 是post 刷新丢失id
 }
 
@@ -40,7 +46,7 @@ function clickItem( accid ){
     {{item.name}}
     </div> -->
     <div v-for="(item,index) in persones.value" >
-      <div class="hitem" v-on:dblclick="clickItem(item.accid)">
+      <div class="hitem" v-on:click="clickItem(item.accid)">
         <img class="pphoto" v-bind:src="imgUrl+item.imgurl"/>
         <div class="pitem onediv">
           <span class="eitem wname">{{item.name}} <span class="isvip">vip</span> <span class="huoyue">上次活跃时间:{{item.activeTime}}</span></span>

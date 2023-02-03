@@ -27,6 +27,7 @@
     let work = reactive({})
     let education = reactive({})
     let message = reactive({})
+    
     window.myonload =function(){
     }
 
@@ -48,7 +49,7 @@
             //     //console.log(k, v);
             // });          
             Object.assign(personDetail, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-            console.log('personDetail:',obj.data)
+            //console.log('personDetail:',obj.data)
           }).catch((err) => {
               alert('连接服务器失败，请刷新页面尝试！')
           });

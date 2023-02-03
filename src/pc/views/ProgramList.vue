@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Cookies from 'js-cookie'
 import TheWelcome from '@/pc/components/TheWelcome.vue'
 import { isTemplateElement } from '@babel/types';
 import {computed,ref,reactive,toRaw,onMounted,getCurrentInstance} from 'vue'
@@ -9,13 +10,13 @@ import {imgUrl,personListUrl,ProgramListControllUrl} from "../js/common.ts"
 //console.log('id:',proxy.$route.query.id )
 isLoginFunForHead()
 window.myp();
-var programs=reactive({})
+var programs=ref([])
 
 onMounted(()=>{
   axios.get(ProgramListControllUrl+Math.random())
         .then((obj) => {       
-          Object.assign(programs, obj.data)
-          console.log('programs:',obj.data)
+          programs.value= obj.data
+          //console.log('programs:',obj.data)
         }).catch((err) => {
             alert('连接服务器失败，请刷新页面尝试！')
         });
@@ -29,7 +30,11 @@ const mytag = computed(() => {
   }
 })
 function clickItem( accid,programid ){  
-  proxy.$router.push({name:'ProgramDetailsView',query: {id:accid,programid:programid}})//query: url后跟id,params: 是post 刷新丢失id
+  if("false" == Cookies.get('isLogin')){
+    alert("请先登录。谢谢。")
+    return;
+  }
+  proxy.$router.push({name:'ProgramDetailsView',query: {accid:accid,programid:programid}})//query: url后跟id,params: 是post 刷新丢失id
 }
 
 </script>
@@ -40,7 +45,7 @@ function clickItem( accid,programid ){
     {{item.name}}
     </div> -->
     <div v-for="(item,index) in programs" >
-      <div class="hitem" v-on:dblclick="clickItem(item.accid,item.programid)">
+      <div class="hitem" v-on:click="clickItem(item.accid,item.programid)">
         <img class="pphoto" v-bind:src="imgUrl+item.imgurl"/>
         <div class="pitem onediv">
           <span class="eitem wname">名称：{{item.name}}  <span class="huoyue">上次活跃时间:{{item.modified_time}}</span></span>

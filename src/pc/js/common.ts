@@ -24,10 +24,18 @@ export var  EducationUrl:String = "https://"+Domain+":448/EducationControll?v="
 
 export var  MessageUrl:String = "https://"+Domain+":448/MessageControll?v="
 export var  ProgramListControllUrl:String = "https://"+Domain+":448/ProgramListControll?v="
+
 export var  ProgramDetailControllUrl:String = "https://"+Domain+":448/ProgramDetailControll?v="
+export var  ProgramDetailByAccidControllUrl:String = "https://"+Domain+":448/ProgramDetailByAccidControll?v="
 
 export var  ProgramImgeControllUrl:String = "https://"+Domain+":448/ProgramImgeControll?v="
 
 export var  PartnerNamesControllUrl:String = "https://"+Domain+":448/PartnerNamesControll?v="
+
+export var  InterestedControllUrl:String = "https://"+Domain+":448/InterestedControll?v="
+
+export var  JoinDetailsControllUrl:String = "https://"+Domain+":448/JoinDetailsControll?v="
+
+export var  JoinInputControllUrl:String = "https://"+Domain+":448/JoinInputControll?v="
 
 

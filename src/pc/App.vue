@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
-import { onMounted, getCurrentInstance } from "vue";
+import {reactive,ref,provide,onMounted, getCurrentInstance,computed} from "vue";
 import Cookies from "js-cookie";
 const {ctx,proxy} = getCurrentInstance()
+
+var routerKey = ref(routerKey)
 
 function MyResize() {
   // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
@@ -34,6 +36,7 @@ window.isLoginFunForHead = function () {
 MyResize();
 
 onMounted(() => {
+  
   window.isLoginFunForHead();
 
   document.getElementById("idexitlogin").addEventListener("click", () => {    
@@ -41,8 +44,7 @@ onMounted(() => {
     window.isLoginFunForHead();
   });
 
-  //default use home
-  const {ctx,proxy} = getCurrentInstance()
+
   proxy.$router.push({name:'home',params: {id:'1'}})
 });
 
@@ -55,6 +57,16 @@ function MyInfoClick(){
 function MyProgramClick(){
   proxy.$router.push({name:'MyProgramEditView',params: {id:'1'}})//query url后跟id,params 是post 刷新丢失id
 }
+
+//子孙多层级通信方法参考
+//https://juejin.cn/post/6973450516294533151
+function UpdateKey(){    
+  setTimeout(() => {
+    routerKey.value=Math.random()    
+  }, 100);//时间太短会无法刷新成功。
+ }
+
+provide("UpdateKey", UpdateKey);
 
 </script>
 
@@ -91,8 +103,9 @@ function MyProgramClick(){
         <RouterLink to="/publish" class="item publish">发布</RouterLink>
       </div>
       <!-- if login end -->
-    </div>
-    <RouterView class="content"> </RouterView>
+    </div>    
+    <RouterView class="content" :key="routerKey" > </RouterView>
+    <!-- <RouterView class="content" id="idrv" v-if="tshow" > </RouterView> -->
     <div class="footer menu">
       <div>2222</div>
     </div>

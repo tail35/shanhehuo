@@ -7,6 +7,8 @@ import ProgramDetailsView from '../views/ProgramDetailsView.vue'
 import MyInfoEditView from '../views/MyInfoEditView.vue'
 import MyProgramEditView from '../views/MyProgramEditView.vue'
 import ProgramList from '../views/ProgramList.vue'
+import JoinDetails from '../views/JoinDetails.vue'
+import JoinInput from '../views/JoinInput.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -63,6 +65,16 @@ const router = createRouter({
       path: '/MyProgramEditView',
       name: 'MyProgramEditView',
       component: MyProgramEditView
+    },
+    {
+      path: '/JoinDetails',
+      name: 'JoinDetails',
+      component: JoinDetails
+    },
+    {
+      path: '/JoinInput',
+      name: 'JoinInput',
+      component: JoinInput
     },
   ]
 })
