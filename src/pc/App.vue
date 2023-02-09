@@ -60,9 +60,9 @@ function MyProgramClick(){
 
 //子孙多层级通信方法参考
 //https://juejin.cn/post/6973450516294533151
-function UpdateKey(){    
+function UpdateKey(){
   setTimeout(() => {
-    routerKey.value=Math.random()    
+    routerKey.value=Math.random()
   }, 100);//时间太短会无法刷新成功。
  }
 
@@ -75,9 +75,9 @@ provide("UpdateKey", UpdateKey);
     <div class="head menu">
       
       <!-- left menu -->
-      <div class="item logo">111111</div>
-      <RouterLink to="/index" class="item index">合伙人</RouterLink>
-      <RouterLink to="/ProgramList" class="item program">项目</RouterLink>
+      <div class="item logo" ><img src="./assets/logo.jpg"></div>
+      <RouterLink to="/index" class="item index">找人</RouterLink>
+      <RouterLink to="/ProgramList" class="item program">找项目</RouterLink>
       <!-- left menu end -->
 
       <!-- right menu if not login -->

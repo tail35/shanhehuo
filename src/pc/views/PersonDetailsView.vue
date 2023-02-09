@@ -95,18 +95,18 @@
         axios.get(curl)
           .then((obj) => {
             Object.assign(education, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-            console.log('education:', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+            //console.log('education:', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
           }).catch((err) => {
               alert('连接服务器失败，请刷新页面尝试！')
           });
       }
-      function GetEducation(){
+      function GetMessage(){
         var id= proxy.$router.currentRoute.value.query.id
         let curl =MessageUrl +Math.random()+"&accid="+id
         axios.get(curl)
           .then((obj) => {
             Object.assign(message, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-            console.log('message:', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+            //console.log('message:', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
           }).catch((err) => {
               alert('连接服务器失败，请刷新页面尝试！')
           });
@@ -116,6 +116,7 @@
       GetContact()
       GetWork()
       GetEducation()
+      GetMessage()
 
     });//end onMounted
 </script>
@@ -123,7 +124,7 @@
   <div class="PersonDetailes">
     <div class="pbase">
       <!-- <h1>{{ personDetail.imgurl }}</h1> -->
-      <img class="headpho"  v-bind:src="imgUrl+personDetail.imgurl"/>      
+      <img class="headpho"  v-bind:src="imgUrl+personDetail.imgurl"/>
       <span class="pname">名称：{{personDetail.name}} </span>
       <span class="industry">行业：{{personDetail.industry}}</span>
       <span class="isvip">vip:{{personDetail.isvip}}</span> 

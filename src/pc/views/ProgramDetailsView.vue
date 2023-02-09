@@ -9,17 +9,16 @@ import {imgUrl,login_urlAction,
   login_urlImg,ProgramDetailControllUrl,
   ProgramImgeControllUrl,PartnerNamesControllUrl,
   InterestedControllUrl,OnePersonDetailsUrl,
-  ProgramDetailByAccidControllUrl
+  ProgramDetailByAccidControllUrl,MessageUrl 
 } from "../js/common.ts"
 import {SubmitRegister} from "../js/register"
 import axios from 'axios' //dhlu
 import { objectExpression } from '@babel/types';
 
 const UpdateKey = inject('UpdateKey');
-
-
 const {ctx,proxy} = getCurrentInstance()
 
+let message = reactive({})
 var programDetail = reactive({})
 var programImgesUrls = ref([])//注意对象数据有区别。
 var PartnerNames = ref([])
@@ -28,6 +27,8 @@ var personDetail = reactive({})
 var programDetailByAccid = ref([])
 window.myonload =function(){
 }
+
+
 
 const myurl = computed(() => {
   return (urlArray)=>{
@@ -61,10 +62,10 @@ function OnLookupInfo()
 
 function OnClicklstDiv(item)
 {  
-  proxy.$router.push({name:'ProgramDetailsView',query:{accid:1,programid:1,wo:Math.random()}})//query: url后跟id,params: 是post 刷新丢失id  
+  proxy.$router.push({name:'ProgramDetailsView',query:{accid:item.accid,programid:item.programid}})//query: url后跟id,params: 是post 刷新丢失id
   proxy.$forceUpdate()
-  UpdateKey()  
-  console.log(item.accid,item.programid);
+  UpdateKey()
+  //console.log(item.accid,item.programid);
 }
 // 生命周期钩子
 onMounted(() => {
@@ -72,12 +73,12 @@ onMounted(() => {
   {    
     //person base info 
     var programid= proxy.$router.currentRoute.value.query.programid
-    let curl = ProgramImgeControllUrl+Math.random()+"&programid="+programid    
-    console.log('111iurl:',curl)
+    let curl = ProgramImgeControllUrl+Math.random()+"&programid="+programid
+    //console.log('111iurl:',curl)
     axios.get(curl)
       .then((obj) => {
         programImgesUrls.value = obj.data //数组是基本类型。用ref
-        console.log('111programImgesUrls:',programImgesUrls)
+        //console.log('111programImgesUrls:',programImgesUrls)
       }).catch((err) => {
           alert('连接服务器失败，请刷新页面尝试！')
       });
@@ -92,7 +93,7 @@ onMounted(() => {
     axios.get(curl)
       .then((obj) => {
         programDetailByAccid.value = obj.data
-        console.log('programDetailByAccid:',programDetailByAccid)
+        //console.log('programDetailByAccid:',programDetailByAccid)
       }).catch((err) => {
           alert('连接服务器失败，请刷新页面尝试！')
       });
@@ -111,7 +112,7 @@ onMounted(() => {
         //console.log('programDetail:',obj.data)
       }).catch((err) => {
           alert('连接服务器失败，请刷新页面尝试！')
-      });          
+      });
    }
    function GetPartnerNanmes()
    {
@@ -156,7 +157,19 @@ onMounted(() => {
           }).catch((err) => {
               alert('连接服务器失败，请刷新页面尝试！')
           });
-      }
+    }
+    function GetMessage(){
+        var accid= proxy.$router.currentRoute.value.query.accid
+        let curl =MessageUrl +Math.random()+"&accid="+accid
+        console.log('222iurl:',curl)
+        axios.get(curl)
+          .then((obj) => {
+            Object.assign(message, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+            console.log("msg1:",message)
+          }).catch((err) => {
+              alert('连接服务器失败，请刷新页面尝试！')
+          });
+    }
 
    GetImgesUrl()
    GetProgramDetail()
@@ -164,6 +177,7 @@ onMounted(() => {
    GetInterestedControll()
    GetPersonDetails()
    GetProgramDetailByAccid()
+   GetMessage()
 });
 </script>
 <template>
@@ -205,10 +219,20 @@ onMounted(() => {
     <br>
     
     <div>留言:</div>
-    <span>时间：xxxx留言：xxx  </span>
-    <span>时间：xxxx留言：xxx  </span>
-    <area />
     <button>发送</button>
+    <textarea class='idmessage'/>
+    
+    <div v-for="(item,index) in message" >
+      <div>
+        <span>
+          <img class="msg_head" v-bind:src="imgUrl+item.imgurl">
+          <span class="mname">{{item.name}}</span>
+          <span class="mtime">{{item.create_time}}</span>
+        </span>
+      </div>
+      <div class="msg_message">{{item.message}}</div>
+    </div>
+
   </div>
 </template>
 <style>

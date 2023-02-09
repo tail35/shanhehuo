@@ -49,10 +49,16 @@ function clickItem( accid ){
       <div class="hitem" v-on:click="clickItem(item.accid)">
         <img class="pphoto" v-bind:src="imgUrl+item.imgurl"/>
         <div class="pitem onediv">
-          <span class="eitem wname">{{item.name}} <span class="isvip">vip</span> <span class="huoyue">上次活跃时间:{{item.activeTime}}</span></span>
-          <span class="eitem shanchang" >擅长：<span>{{item.beGoodAt}}</span></span>
-          <span class="eitem jingyan">经验：<span>{{item.experience}}</span></span>
-          <span class="etiem biaoqian">标签：<span>{{mytag(item)}}</span></span>
+          <div class="eitem wname"> {{item.name}} 
+            <span class="isvip">vip</span> 
+            <span class="huoyue">上次活跃时间:&nbsp;{{item.activeTime}}</span>
+          </div>
+          <div>
+            <span>行业:&nbsp&nbsp{{item.industry}}</span> 
+            <span class="etiem city">&nbsp;&nbsp;城市：北京.北京</span>
+          </div>
+          <div class="etiem biaoqian">标签：&nbsp{{mytag(item)}}</div>  
+          <div class="eitem jingyan">简介：&nbsp{{item.simple_introduce}}</div>          
         </div>
       </div>
     </div>
@@ -104,7 +110,7 @@ function clickItem( accid ){
 }
 .onediv{
   width:100%;
-  height: 101px;
+  height: fit-content;
 }
 
 </style>
