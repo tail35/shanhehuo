@@ -41,19 +41,14 @@ function clickItem( accid,programid ){
 
 <template>
   <main class="phmain">
-    <!-- <div v-for="item in persones">
-    {{item.name}}
-    </div> -->
-    <div v-for="(item,index) in programs" >
-      <div class="pphitem" v-on:click="clickItem(item.accid,item.programid)">
-        <img class="ppphoto" v-bind:src="imgUrl+item.imgurl"/>
-        <div class="ppitem ponediv">
-          <span class="peitem wname">名称：{{item.name}}  <span class="huoyue">上次活跃时间:{{item.modified_time}}</span></span>
-          <span class="peitem shanchang" >团队人数：{{item.team_number}}</span><span>投入资金：{{item.invested_fund}}</span>
-          <span class="peitem jingyan">城市：<span>{{item.province_name}}.{{item.city_name}}</span></span>
-          <span class="petiem biaoqian">详情：<span>{{item.description}}</span></span>
-        </div>
-      </div>
+    <div v-for="(item,index) in programs" class="mainItem" v-on:click="clickItem(item.accid,item.programid)">
+      
+        <img class="imgdiv" v-bind:src="imgUrl+item.imgurl"/>
+        <div class="infodiv">
+          <span class="wname">名称：&nbsp;{{item.name}}  <span class="huoyue">&nbsp;&nbsp;上次活跃时间:&nbsp;{{item.modified_time}}</span></span>
+          <div class="shanchang" >团队人数：{{item.team_number}}&nbsp;&nbsp;投入资金：{{item.invested_fund}}</div>
+          <div class="jingyan">城市：&nbsp;{{item.province_name}}.{{item.city_name}}&nbsp;&nbsp;详情：&nbsp;{{item.description}}</div>
+        </div>      
     </div>
   </main>
 </template>
@@ -63,35 +58,20 @@ function clickItem( accid,programid ){
     margin-left: 10px;
     visibility: collapse;
   }
-  .huoyue{
-    margin-left: 10px;
-  }
- .eitem{
- }
-.ppitem{
-  flex-direction: column;
-  margin-left: 10px;
-}
-.phmain{
-  min-height: 100vh;
-}
-.pphitem{
-  display: flex;
+  .mainItem{
+  display: grid;
+  grid-template-columns:180px auto;
   margin-top: 10px;
-  border: 1px solid black;
-}
-.ppphoto,.ppitem{
-  display: flex;
-  float: left;  
   border: 1px solid red;
 }
-.ppphoto{
+.imgdiv{
   width: 180px;
   height: 101px;
+  border: 1px solid greenyellow;
 }
-.ponediv{
-  width:100%;
-  height: 100%;
+.infodiv{
+  margin-left: 10px;
+  border: 1px solid black;
 }
 
 </style>
