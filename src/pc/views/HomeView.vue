@@ -29,6 +29,13 @@ const mytag = computed(() => {
     return my
   }
 })
+const myUrl = computed(() => {
+  return (item)=>{    
+    var url = imgUrl+item.imgurl+"?v="+Math.random()
+    console.log("h:",url)
+    return url
+  }
+})
 function clickItem( accid ){  
     
   if("false" == Cookies.get('isLogin')){
@@ -42,13 +49,10 @@ function clickItem( accid ){
 
 <template>
   <main class="hmain">
-    <!-- <div v-for="item in persones">
-    {{item.name}}
-    </div> -->
-    <div v-for="(item,index) in persones.value" >
-      <div class="hitem" v-on:click="clickItem(item.accid)">
-        <img class="pphoto" v-bind:src="imgUrl+item.imgurl"/>
-        <div class="pitem onediv">
+    <div v-for="(item,index) in persones.value" class="mainItem" v-on:click="clickItem(item.accid)">
+    
+        <img class="imgdiv" v-bind:src="imgUrl+item.imgurl"/>
+        <div class="infodiv">
           <div class="eitem wname"> {{item.name}} 
             <span class="isvip">vip</span> 
             <span class="huoyue">上次活跃时间:&nbsp;{{item.activeTime}}</span>
@@ -60,20 +64,8 @@ function clickItem( accid ){
           <div class="etiem biaoqian">标签：&nbsp{{mytag(item)}}</div>  
           <div class="eitem jingyan">简介：&nbsp{{item.simple_introduce}}</div>          
         </div>
-      </div>
+      
     </div>
-
-    <!-- 
-      <div class="hitem">
-      <img class="pphoto" />
-      <div class="pitem onediv">
-        <span class="eitem wname">名称：xxx <span class="isvip">vip</span> <span class="huoyue">上次活跃时间:2022-09-29</span></span>
-        <span class="eitem shanchang" >擅长：<span>xxxx</span></span>
-        <span class="eitem jingyan">经验：<span>xxxx</span></span>
-        <span class="etiem biaoqian">标签：<span>xxxx</span></span>
-      </div>
-    </div>
-    <div>123456</div> -->
   </main>
 </template>
 <style>
@@ -82,35 +74,20 @@ function clickItem( accid ){
     margin-left: 10px;
     visibility: collapse;
   }
-  .huoyue{
-    margin-left: 10px;
-  }
- .eitem{
- }
-.pitem{
-  flex-direction: column;
-  margin-left: 10px;
-}
-.hmain{
-  min-height: 100vh;
-}
-.hitem{
-  display: flex;
+.mainItem{
+  display: grid;
+  grid-template-columns:180px auto;
   margin-top: 10px;
-  border: 1px solid black;
-}
-.pphoto,.pitem{
-  display: flex;
-  float: left;  
   border: 1px solid red;
 }
-.pphoto{
+.imgdiv{
   width: 180px;
   height: 101px;
+  border: 1px solid greenyellow;
 }
-.onediv{
-  width:100%;
-  height: fit-content;
+.infodiv{
+  margin-left: 10px;
+  border: 1px solid black;
 }
 
 </style>

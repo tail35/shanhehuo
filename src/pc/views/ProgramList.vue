@@ -40,18 +40,18 @@ function clickItem( accid,programid ){
 </script>
 
 <template>
-  <main class="hmain">
+  <main class="phmain">
     <!-- <div v-for="item in persones">
     {{item.name}}
     </div> -->
     <div v-for="(item,index) in programs" >
-      <div class="hitem" v-on:click="clickItem(item.accid,item.programid)">
-        <img class="pphoto" v-bind:src="imgUrl+item.imgurl"/>
-        <div class="pitem onediv">
-          <span class="eitem wname">名称：{{item.name}}  <span class="huoyue">上次活跃时间:{{item.modified_time}}</span></span>
-          <span class="eitem shanchang" >团队人数：{{item.team_number}}</span><span>投入资金：{{item.invested_fund}}</span>
-          <span class="eitem jingyan">城市：<span>{{item.province_name}}.{{item.city_name}}</span></span>
-          <span class="etiem biaoqian">详情：<span>{{item.description}}</span></span>
+      <div class="pphitem" v-on:click="clickItem(item.accid,item.programid)">
+        <img class="ppphoto" v-bind:src="imgUrl+item.imgurl"/>
+        <div class="ppitem ponediv">
+          <span class="peitem wname">名称：{{item.name}}  <span class="huoyue">上次活跃时间:{{item.modified_time}}</span></span>
+          <span class="peitem shanchang" >团队人数：{{item.team_number}}</span><span>投入资金：{{item.invested_fund}}</span>
+          <span class="peitem jingyan">城市：<span>{{item.province_name}}.{{item.city_name}}</span></span>
+          <span class="petiem biaoqian">详情：<span>{{item.description}}</span></span>
         </div>
       </div>
     </div>
@@ -68,30 +68,30 @@ function clickItem( accid,programid ){
   }
  .eitem{
  }
-.pitem{
+.ppitem{
   flex-direction: column;
   margin-left: 10px;
 }
-.hmain{
+.phmain{
   min-height: 100vh;
 }
-.hitem{
+.pphitem{
   display: flex;
   margin-top: 10px;
   border: 1px solid black;
 }
-.pphoto,.pitem{
+.ppphoto,.ppitem{
   display: flex;
   float: left;  
   border: 1px solid red;
 }
-.pphoto{
+.ppphoto{
   width: 180px;
   height: 101px;
 }
-.onediv{
+.ponediv{
   width:100%;
-  height: 101px;
+  height: 100%;
 }
 
 </style>
