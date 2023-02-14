@@ -126,9 +126,9 @@
       <!-- <h1>{{ personDetail.imgurl }}</h1> -->
       <img class="headpho"  v-bind:src="imgUrl+personDetail.imgurl"/>
       <span class="pname">名称：{{personDetail.name}} </span>
-      <span class="industry">行业：{{personDetail.industry}}</span>
-      <span class="isvip">vip:{{personDetail.isvip}}</span> 
-      <div class="activeTime">上次活跃:&nbsp;{{personDetail.activeTime}}</div>        
+      <span class="industry">方向：{{personDetail.industry}}</span>
+      <span class="isvip">vip:{{personDetail.isvip}}</span>
+      <div class="activeTime">上次活跃:&nbsp;{{personDetail.activeTime}}</div>
       <span class="identified">实名认证：{{personDetail.is_identified?"是":"否"}}</span>
       <span class="province_name">城市：{{personDetail.province_name}}.{{personDetail.city_name}}</span>
       <div class="tag">创业标签：{{personDetail.tag}}</div>

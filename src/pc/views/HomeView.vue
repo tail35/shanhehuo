@@ -16,7 +16,7 @@ onMounted(()=>{
   axios.get(personListUrl+Math.random())
         .then((obj) => {
           persones.value = obj.data
-          //console.log('plist:',persones.value)
+          console.log('plist:',persones.value)
         }).catch((err) => {
             alert('连接服务器失败，请刷新页面尝试！')
         });
@@ -55,20 +55,24 @@ function clickItem( accid ){
         <div class="infodiv">
           <div class="wname"> {{item.name}} 
             <span class="isvip">vip</span> 
-            <span class="huoyue">上次活跃时间:&nbsp;{{item.activeTime}}</span>
+            <span class="huoyue"><a>上次活跃时间:</a>&nbsp;{{item.activeTime}}</span>
           </div>
           <div>
-            <span>行业:&nbsp&nbsp{{item.industry}}</span> 
-            <span class="city">&nbsp;&nbsp;城市：北京.北京</span>
+            <span><a>方向</a>:&nbsp&nbsp{{item.industry}}</span> 
+            <span class="city">&nbsp;&nbsp;<a>城市</a>：{{item.province_name}}.{{item.city_name}}</span>
+            <span class="role">&nbsp;&nbsp;<a>角色</a>：{{item.partnership_name}}</span>
           </div>
-          <div class="biaoqian">标签：&nbsp{{mytag(item)}}</div>  
-          <div class="jingyan">简介：&nbsp{{item.simple_introduce}}</div>          
+          <div class="biaoqian"><a>标签</a>：&nbsp{{mytag(item)}}</div>  
+          <div class="jianjie"><a>简介</a>：&nbsp{{item.simple_introduce}}</div>          
         </div>
       
     </div>
   </main>
 </template>
 <style>
+.infodiv a{
+  color: red;
+}
   .isvip{
     font: 1em sans-serif;
     margin-left: 10px;
@@ -80,14 +84,18 @@ function clickItem( accid ){
   margin-top: 10px;
   border: 1px solid red;
 }
+.mainItem:hover{  
+  cursor:pointer;
+  border:3px solid blue;
+}
 .imgdiv{
   width: 180px;
   height: 101px;
-  border: 1px solid greenyellow;
+  /* border: 1px solid red; */
 }
 .infodiv{
   margin-left: 10px;
-  border: 1px solid black;
+  /* border: 1px solid red; */
 }
 
 </style>

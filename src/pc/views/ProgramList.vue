@@ -41,37 +41,45 @@ function clickItem( accid,programid ){
 
 <template>
   <main class="phmain">
-    <div v-for="(item,index) in programs" class="mainItem" v-on:click="clickItem(item.accid,item.programid)">
+    <div v-for="(item,index) in programs" class="pmainItem" v-on:click="clickItem(item.accid,item.programid)">
       
-        <img class="imgdiv" v-bind:src="imgUrl+item.imgurl"/>
-        <div class="infodiv">
-          <span class="wname">名称：&nbsp;{{item.name}}  <span class="huoyue">&nbsp;&nbsp;上次活跃时间:&nbsp;{{item.modified_time}}</span></span>
-          <div class="shanchang" >团队人数：{{item.team_number}}&nbsp;&nbsp;投入资金：{{item.invested_fund}}</div>
-          <div class="jingyan">城市：&nbsp;{{item.province_name}}.{{item.city_name}}&nbsp;&nbsp;详情：&nbsp;{{item.description}}</div>
+        <img class="pimgdiv" v-bind:src="imgUrl+item.imgurl"/>
+        <div class="pinfodiv">
+          <span class="pwname"><span class="ptext"><a>名称</a>：</span>&nbsp;{{item.name}}  <span class="huoyue">&nbsp;&nbsp;<a>上次活跃时间:</a>&nbsp;{{item.modified_time}}</span></span>
+          <br>
+          <div class="pshanchang"><a>团队人数：</a>{{item.team_number}}&nbsp;&nbsp;<a>投入资金：</a>{{item.invested_fund}}</div>
+          <div class="pjingyan"><a>城市：</a>&nbsp;{{item.province_name}}.{{item.city_name}}&nbsp;&nbsp;<a>详情：</a>&nbsp;{{item.description}}</div>
         </div>      
     </div>
   </main>
 </template>
 <style>
+.pinfodiv a{
+  color: red;
+}
   .isvip{
     font: 1em sans-serif;
     margin-left: 10px;
     visibility: collapse;
   }
-  .mainItem{
+  .pmainItem{
   display: grid;
   grid-template-columns:180px auto;
   margin-top: 10px;
   border: 1px solid red;
 }
-.imgdiv{
+.pmainItem:hover{
+  cursor:pointer;
+  border:3px solid blue;
+}
+.pimgdiv{
   width: 180px;
   height: 101px;
-  border: 1px solid greenyellow;
+  /* border: 1px solid red; */
 }
-.infodiv{
+.pinfodiv{
   margin-left: 10px;
-  border: 1px solid black;
+  /* border: 1px solid red; */
 }
 
 </style>
