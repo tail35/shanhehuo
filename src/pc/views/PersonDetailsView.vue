@@ -35,8 +35,8 @@
     onMounted(() => {     
       function GetPersonDetails(){
         //person base info 
-        var id= proxy.$router.currentRoute.value.query.id
-        let curl = OnePersonDetailsUrl+Math.random()+"&accid="+id    
+        var accid= proxy.$router.currentRoute.value.query.accid
+        let curl = OnePersonDetailsUrl+Math.random()+"&accid="+accid    
         
         axios.get(curl)
           .then((obj) => {
@@ -56,8 +56,8 @@
       }
       function GetPrograms(){
         //person base info 
-        var id= proxy.$router.currentRoute.value.query.id
-        let curl = SimpleProgramsUrl+Math.random()+"&accid="+id    
+        var accid= proxy.$router.currentRoute.value.query.accid
+        let curl = SimpleProgramsUrl+Math.random()+"&accid="+accid    
         
         axios.get(curl)
           .then((obj) => {        
@@ -68,8 +68,8 @@
           });
       }
       function GetContact(){
-        var id= proxy.$router.currentRoute.value.query.id
-        let curl = ContactUrl+Math.random()+"&accid="+id
+        var accid= proxy.$router.currentRoute.value.query.accid
+        let curl = ContactUrl+Math.random()+"&accid="+accid
         axios.get(curl)
           .then((obj) => {        
             Object.assign(contact, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
@@ -79,8 +79,8 @@
           });
       }
       function GetWork(){
-        var id= proxy.$router.currentRoute.value.query.id
-        let curl = WorkUrl+Math.random()+"&accid="+id
+        var accid = proxy.$router.currentRoute.value.query.accid
+        let curl = WorkUrl+Math.random()+"&accid="+accid
         axios.get(curl)
           .then((obj) =>{
             Object.assign(work, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
@@ -90,8 +90,8 @@
           });
       }
       function GetEducation(){
-        var id= proxy.$router.currentRoute.value.query.id
-        let curl = EducationUrl+Math.random()+"&accid="+id
+        var accid = proxy.$router.currentRoute.value.query.accid
+        let curl = EducationUrl+Math.random()+"&accid="+accid
         axios.get(curl)
           .then((obj) => {
             Object.assign(education, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
@@ -101,8 +101,8 @@
           });
       }
       function GetMessage(){
-        var id= proxy.$router.currentRoute.value.query.id
-        let curl =MessageUrl +Math.random()+"&accid="+id
+        var accid = proxy.$router.currentRoute.value.query.accid
+        let curl =MessageUrl +Math.random()+"&accid="+accid
         axios.get(curl)
           .then((obj) => {
             Object.assign(message, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue

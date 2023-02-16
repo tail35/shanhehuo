@@ -12,6 +12,8 @@ export var login_urlAction:String = "https://"+Domain+":448/login?v="
 
 //person list
 export var  personListUrl:String = "https://"+Domain+":448/PersonList?v="
+export var  pagesNumUrl:String = "https://"+Domain+":448/PagesNumControll?v="
+
 export var  imgUrl:String = "https://"+Domain+":448/shanstatic/"
 
 export var  OnePersonDetailsUrl:String = "https://"+Domain+":448/OnePersonDetails?v="

@@ -39,23 +39,23 @@ onMounted(() => {
   
   window.isLoginFunForHead();
 
-  document.getElementById("idexitlogin").addEventListener("click", () => {    
+  document.getElementById("idexitlogin").addEventListener("click", () => {
     Cookies.set("isLogin", "false");
     window.isLoginFunForHead();
   });
 
 
-  proxy.$router.push({name:'home',params: {id:'1'}})
+  proxy.$router.push({name:'HomeView',query: {pageindex:"1"}})
 });
 
 window.myp = function () {
   
 }
 function MyInfoClick(){
-  proxy.$router.push({name:'MyInfoEditView',params: {id:'1'}})//query url后跟id,params 是post 刷新丢失id
+  proxy.$router.push({name:'MyInfoEditView',query: {accid:'1'}})//query: url后跟id,params: 是post 刷新丢失id
 }
 function MyProgramClick(){
-  proxy.$router.push({name:'MyProgramEditView',params: {id:'1'}})//query url后跟id,params 是post 刷新丢失id
+  proxy.$router.push({name:'MyProgramEditView',query: {accid:'1'}})//query url后跟id,params 是post 刷新丢失id
 }
 
 //子孙多层级通信方法参考
@@ -106,8 +106,8 @@ provide("UpdateKey", UpdateKey);
     </div>    
     <RouterView class="content" :key="routerKey" > </RouterView>
     <!-- <RouterView class="content" id="idrv" v-if="tshow" > </RouterView> -->
-    <div class="footer menu">
-      <div>2222</div>
+    <div class="footermenu">
+      <div class="footcontent">友情链接&nbsp;&nbsp;&nbsp;京ICP备19049625</div>
     </div>
 <!-- </div> -->
 </template>
@@ -154,13 +154,8 @@ provide("UpdateKey", UpdateKey);
   height: 50px; */
   /* border: 1px solid red; */
 }
-/* content */
-/* .content{
-  position:relative;
-  margin-top: 85px;
-  height: 100%;
-} */
-.footer {
+
+.footermenu {
   border: 1px solid red;
   width: 1280px;
   height: 50px;
