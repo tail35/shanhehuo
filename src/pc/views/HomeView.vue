@@ -13,7 +13,7 @@ isLoginFunForHead()
 window.myp();
 var persones=reactive([])
 var pagesNum=reactive({})
-var pageCur=reactive({value:0})
+var pageCur=reactive({value:1})
 
 function isNumber(theObj) {
       var reg = /^[0-9]+.?[0-9]*$/;
@@ -28,13 +28,16 @@ onMounted(()=>{
     var pageindex = proxy.$router.currentRoute.value.query.pageindex
     if(null == pageindex){
       pageindex = Cookies.get("pageindex")
-    }else{
-      Cookies.set("pageindex",pageindex)
+      if(null == pageindex){
+        pageindex = 0;
+      }
     }
+    Cookies.set("pageindex",pageindex)
+    
     pageCur.value = pageindex;
-    console.log("pageCur:",pageCur)
+    //console.log("pageCur:",pageCur)
     var myurl = personListUrl+Math.random()+"&page="+pageindex
-    console.log("pg:",myurl)
+    //console.log("pg:",myurl)
     axios.get( myurl )
         .then((obj) => {
           persones.value = obj.data
@@ -49,22 +52,20 @@ onMounted(()=>{
     axios.get( myurl )
         .then((obj) => {
           Object.assign(pagesNum,obj.data)
-          console.log('pagesNum:',pagesNum)
+          //console.log('pagesNum:',pagesNum)
           //flush
 
         }).catch((err) => {
             alert('连接服务器失败，请刷新页面尝试！')
         });
   }
+
   function JumpToPage(page){
     proxy.$router.push({name:'HomeView',query: {pageindex:page}})
     proxy.$forceUpdate()
     UpdateKey()
   }
 
-  function ShowPageDiv(){
-
-  }
   var idpageinput = document.getElementById("idpageinput")
   
   idpageinput.onblur = function(){
@@ -80,7 +81,7 @@ onMounted(()=>{
   }
   GetPersonListUrl()
   GetPageNum()
-  ShowPageDiv()
+  
 })
 
 //传参数,计算属性值
@@ -135,8 +136,7 @@ function clickItem( accid ){
         <span>共{{pagesNum.PagesNum}}页,&nbsp;跳转到&nbsp;</span>
         <input id="idpageinput" class="pageinput" v-bind:value="pageCur.value" /> <span>页</span>
       </ul>
-      <div class="pageright">
-        
+      <div class="pageright">        
       </div>
   </div>
   </main>
@@ -153,26 +153,13 @@ function clickItem( accid ){
   grid-template-columns:auto auto;
   border: 1px solid red;
 }
-ul.pagination {
-    display: inline-block;
 
-}
 /* .pageright{
   border: 1px solid green;
   text-align: center;
   padding: 16px 0px
 } */
-.pageright span{
-  
-}
-ul.pagination li {display: inline;}
 
-ul.pagination li a {
-    color: black;
-    /* float: left; */
-    padding: 8px 16px;
-    text-decoration: none;
-}
 
 .infodiv a{
   color: red;

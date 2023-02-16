@@ -2,24 +2,84 @@
 import Cookies from 'js-cookie'
 import TheWelcome from '@/pc/components/TheWelcome.vue'
 import { isTemplateElement } from '@babel/types';
-import {computed,ref,reactive,toRaw,onMounted,getCurrentInstance} from 'vue'
+import {inject,computed,ref,reactive,toRaw,onMounted,getCurrentInstance} from 'vue'
 const {ctx,proxy} = getCurrentInstance()
 import axios from 'axios' //dhlu
-import {imgUrl,personListUrl,ProgramListControllUrl} from "../js/common.ts"
+import {PropagesNumUrl,imgUrl,personListUrl,ProgramListControllUrl} from "../js/common.ts"
 
-//console.log('id:',proxy.$route.query.id )
+const UpdateKey = inject('UpdateKey')
 isLoginFunForHead()
 window.myp();
+
 var programs=ref([])
+var PropagesNum=reactive({})
+var PropageCur=reactive({value:1})
+
+function isNumber(theObj) {
+      var reg = /^[0-9]+.?[0-9]*$/;
+      if (reg.test(theObj)) {
+        return true;
+      }
+  return false;
+}
+
 
 onMounted(()=>{
-  axios.get(ProgramListControllUrl+Math.random())
-        .then((obj) => {       
-          programs.value= obj.data
-          //console.log('programs:',obj.data)
+  function GetProgramList(){
+  var Propageindex = proxy.$router.currentRoute.value.query.Propageindex
+    if(null == Propageindex){
+      Propageindex = Cookies.get("Propageindex")
+      if(null==Propageindex || 0==Propageindex){
+        Propageindex = 1;//start with 1
+      }
+    }  
+    Cookies.set("Propageindex",Propageindex)
+
+    PropageCur.value = Propageindex;
+    console.log("PropageCur:",PropageCur)
+    var myurl = ProgramListControllUrl+Math.random()+"&page="+Propageindex
+    axios.get(myurl)
+          .then((obj) => {
+            programs.value= obj.data
+            //console.log('programs:',obj.data)
+          }).catch((err) => {
+              alert('连接服务器失败，请刷新页面尝试！')
+          });
+  }
+  function GetPageNum(){
+    var myurl = PropagesNumUrl+Math.random()
+    //console.log(pagesNumUrl)
+    axios.get( myurl )
+        .then((obj) => {
+          Object.assign(PropagesNum,obj.data)
+          console.log('PropagesNum:',PropagesNum)
+          //flush
+
         }).catch((err) => {
             alert('连接服务器失败，请刷新页面尝试！')
         });
+  }
+  function JumpToPage(page){
+    proxy.$router.push({name:'ProgramList',query: {Propageindex:page}})
+    proxy.$forceUpdate()
+    UpdateKey()
+  }
+  var idPropageinput = document.getElementById("idPropageinput")
+  
+  idPropageinput.onblur = function(){
+    var page = idPropageinput.value
+    if( null == page){
+      return
+    }
+    if(false == isNumber(page) || "0"==page){
+      alert('只能输入正整数!')
+      return
+    }
+    JumpToPage(page)
+  }
+
+  GetProgramList()
+  GetPageNum()
 })
 
 //传参数,计算属性值
@@ -51,9 +111,32 @@ function clickItem( accid,programid ){
           <div class="pjingyan"><a>城市：</a>&nbsp;{{item.province_name}}.{{item.city_name}}&nbsp;&nbsp;<a>详情：</a>&nbsp;{{item.description}}</div>
         </div>      
     </div>
+    <br>
+    <div class="Propagetable">
+      <ul class="Propagination">
+        当前是第<a class="Procurpagea">{{PropageCur.value}}</a>页,&nbsp;
+        <span>共{{PropagesNum.PagesNum}}页,&nbsp;跳转到&nbsp;</span>
+        <input id="idPropageinput" class="Propageinput" v-bind:value="PropageCur.value" /> <span>页</span>
+      </ul>
+      <div class="pageright">        
+      </div>
+    </div>
   </main>
 </template>
 <style>
+
+.Procurpagea{
+  color: red;
+}
+.Propageinput{
+  width: 60px;
+}
+.Propagetable{
+  display: grid;
+  grid-template-columns:auto auto;
+  border: 1px solid red;
+}
+
 .pinfodiv a{
   color: red;
 }

@@ -14,6 +14,9 @@ export var login_urlAction:String = "https://"+Domain+":448/login?v="
 export var  personListUrl:String = "https://"+Domain+":448/PersonList?v="
 export var  pagesNumUrl:String = "https://"+Domain+":448/PagesNumControll?v="
 
+
+
+
 export var  imgUrl:String = "https://"+Domain+":448/shanstatic/"
 
 export var  OnePersonDetailsUrl:String = "https://"+Domain+":448/OnePersonDetails?v="
@@ -26,6 +29,8 @@ export var  EducationUrl:String = "https://"+Domain+":448/EducationControll?v="
 
 export var  MessageUrl:String = "https://"+Domain+":448/MessageControll?v="
 export var  ProgramListControllUrl:String = "https://"+Domain+":448/ProgramListControll?v="
+export var  PropagesNumUrl:String = "https://"+Domain+":448/ProgramPagesNumControll?v="
+
 
 export var  ProgramDetailControllUrl:String = "https://"+Domain+":448/ProgramDetailControll?v="
 export var  ProgramDetailByAccidControllUrl:String = "https://"+Domain+":448/ProgramDetailByAccidControll?v="
