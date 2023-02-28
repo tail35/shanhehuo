@@ -61,7 +61,7 @@ function GetValue(){
   arr.interested_accid = Cookies.get('myaccid');//login accid. 
   arr.programid= proxy.$router.currentRoute.value.query.programid
 
-  console.log("11:",JSON.stringify(arr) )
+  //console.log("11:",JSON.stringify(arr) )
   return arr
 }
 function OnSubmit(){
@@ -72,11 +72,9 @@ function OnSubmit(){
 
   let curl = JoinInputControllUrl+Math.random()
   console.log('JoinInput:',curl)
-
   axios.post(curl,arr)//默认json格式
     .then((obj) =>{
       console.log("11:",obj.data.code)
-
       if( null!=obj.data.code && 0==obj.data.code){
         alert("提交成功。")
       }

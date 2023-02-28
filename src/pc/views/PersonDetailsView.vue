@@ -15,7 +15,8 @@
       ContactUrl,
       WorkUrl,
       EducationUrl,
-      MessageUrl
+      MessageUrl,
+      OnePersonMsgControllUrl
     } from "../js/common.ts"
     import {SubmitRegister} from "../js/register"
     import axios from 'axios' //dhlu
@@ -31,12 +32,47 @@
     window.myonload =function(){
     }
 
-    // 生命周期钩子
-    onMounted(() => {     
+    function OnSendMsg()
+    {
+      
+      var idMsg = document.getElementById("idMsg")
+      if (null==idMsg || ""== idMsg.value ){
+        return
+      }
+
+      let curl = OnePersonMsgControllUrl+Math.random()
+      //axios.post(curl,idMsg.value,{ headers: {'Content-Type': 'text/plain'} })
+      var arr={};
+      arr.toaccid=proxy.$router.currentRoute.value.query.accid
+      arr.fromaccid=Cookies.get("myaccid")
+      arr.msg = idMsg.value
+            
+      //var tmp = JSON.stringify(arr)
+      //axios data 必须是array对象，不要自己string化。
+      axios.post( curl,arr)
+          .then((obj) => {
+            if( 0 == obj.data ){
+              console.log("person")
+              if(0 == obj.data.code){
+                
+              }
+            }
+          }).catch((err) => {
+              alert('连接服务器失败，请刷新页面尝试！')
+          });
+    }
+
+    function MylImgClick(item){
+      
+      proxy.$router.push({name:'ProgramDetailsView',query:{accid:item.accid,programid:item.programid}})//query: url后跟id,params: 是post 刷新丢失id
+      //console.log("11111",item)
+    }
+    //生命周期钩子
+    onMounted(() => {
       function GetPersonDetails(){
         //person base info 
         var accid= proxy.$router.currentRoute.value.query.accid
-        let curl = OnePersonDetailsUrl+Math.random()+"&accid="+accid    
+        let curl = OnePersonDetailsUrl+Math.random()+"&accid="+accid
         
         axios.get(curl)
           .then((obj) => {
@@ -62,7 +98,7 @@
         axios.get(curl)
           .then((obj) => {        
             Object.assign(programs, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-            console.log('programs:',obj.data)
+            //console.log('programs:',obj.data)
           }).catch((err) => {
               alert('连接服务器失败，请刷新页面尝试！')
           });
@@ -73,7 +109,7 @@
         axios.get(curl)
           .then((obj) => {        
             Object.assign(contact, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-            console.log('contact', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+            //console.log('contact', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
           }).catch((err) => {
               alert('连接服务器失败，请刷新页面尝试！')
           });
@@ -84,7 +120,7 @@
         axios.get(curl)
           .then((obj) =>{
             Object.assign(work, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-            console.log('work:', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+            //console.log('work:', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
           }).catch((err) => {
               alert('连接服务器失败，请刷新页面尝试！')
           });
@@ -95,7 +131,7 @@
         axios.get(curl)
           .then((obj) => {
             Object.assign(education, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-            //console.log('education:', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+            console.log('education:', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
           }).catch((err) => {
               alert('连接服务器失败，请刷新页面尝试！')
           });
@@ -122,60 +158,79 @@
 </script>
 <template>
   <div class="PersonDetailes">
-    <div class="pbase">
-      <!-- <h1>{{ personDetail.imgurl }}</h1> -->
-      <img class="headpho"  v-bind:src="imgUrl+personDetail.imgurl"/>
-      <span class="pname">名称：{{personDetail.name}} </span>
-      <span class="industry">方向：{{personDetail.industry}}</span>
-      <span class="isvip">vip:{{personDetail.isvip}}</span>
-      <div class="activeTime">上次活跃:&nbsp;{{personDetail.activeTime}}</div>
-      <span class="identified">实名认证：{{personDetail.is_identified?"是":"否"}}</span>
-      <span class="province_name">城市：{{personDetail.province_name}}.{{personDetail.city_name}}</span>
-      <div class="tag">创业标签：{{personDetail.tag}}</div>
+    <br>
+    <div class="pbase">      
+      <img class="myheadpho"  v-bind:src="imgUrl+personDetail.imgurl"/>
+      <div class="myinfoDiv">
+        <span class="pname">名称：{{personDetail.name}} </span>
+        <span class="industry">方向：{{personDetail.industry}}</span>
+        <span class="isvip">vip:{{personDetail.isvip}}</span>
+        <div class="activeTime">上次活跃:&nbsp;{{personDetail.activeTime}}</div>
+        <span class="identified">实名认证：{{personDetail.is_identified?"是":"否"}}</span>
+        <span class="province_name">城市：{{personDetail.province_name}}.{{personDetail.city_name}}</span>
+        <span class="role">&nbsp;&nbsp;<a>角色</a>：{{personDetail.partnership_name}}</span>
+        <div class="tag">创业标签：{{personDetail.tag}}</div>
+        <div class="simple_introduce">简介：{{personDetail.simple_introduce}}</div>
+      </div>
     </div>
+    <br>
     
-    <div class="simple_introduce">简介：{{personDetail.simple_introduce}}</div>
-    <div>我有项目，招合伙人：{{personDetail.need}}</div>
-    <div>我没项目，想加入项目：{{personDetail.want_join}}</div>
-
-    <div v-for="(item,index) in programs" >
-    <div class="firstdiv">项目[{{item.name}}]：</div>
-    <div>正在找[{{item.partnership_name}}]合伙人：</div>
-    <div>{{item.join_condition}}。</div>
-    <!-- <span></span><span>xxxx</span> <span>共10人</span> <span>想加入</span> -->
-    <div class="lstdiv"></div>
+    <div class="myDetails">
+      <div>个人详细描述：</div>
+      <div class="detailsDiv">{{personDetail.myDetails}}</div>
     </div>
+
+    <br>
+    <div>
+    他的项目列表：
+    </div>
+    <div class="myprogramlist" >
+      <div class="myprogramItem" v-on:click="MylImgClick(item)"  v-for="(item,index) in programs">
+        <img class="limg" v-bind:src="imgUrl+item.imgurl" />
+        <div class="firstdiv">项目名称：{{item.name}}</div>
+      </div>
+    </div>
+    <!-- <table>
+      <tr>
+        <td class="myprogramtable" v-for="(item,index) in programs">
+          <div class="firstdiv">项目[{{item.name}}]：</div>
+          <div>正在找[{{item.partnership_name}}]</div>
+          <div>{{item.join_condition}}</div>
+        </td>
+      </tr>
+    </table> -->
+    <br>
 
     <div>工作经历:</div>
-    <div v-for="(item,index) in work" >    
-    <div>公司名称：{{item.company_name}}</div>
-    <div>担任职位：{{item.jobname}}</div>
-    <div>服务时间：{{item.start_time}}--{{item.end_time}}</div>
-    <div>工作内容：{{item.job_describe}}</div>
-    <br>
+    <div class="workItem" v-for="(item,index) in work" >
+      <div>公司名称：{{item.company_name}}</div>
+      <div>担任职位：{{item.jobname}}</div>
+      <div>服务时间：{{item.start_time}}--{{item.end_time}}</div>      
+      <div class="wcontent">工作内容：{{item.job_describe}}</div>
+      <div class="wsplititem"></div>
     </div>
-
+    <br>
     <div>教育经历:</div>
-    <div v-for="(item,index) in education" >    
-    <div>学校名称：{{item.name}}</div>
-    <div>学位:{{item.educational_background}}</div>
-    <div>学习时间：{{item.start_time}}--{{item.end_time}}</div>
-    <div>专业名称：{{item.major}}</div>
-    <div>取得成绩：{{item.education_describe}}</div>
-    <br>
+    <div class="eitem" v-for="(item,index) in education">
+      <div>学校名称：{{item.name}}</div>
+      <div>学位:{{item.educational_background}}</div>
+      <div>学习时间：{{item.start_time}}--{{item.end_time}}</div>
+      <div>专业名称：{{item.major}}</div>
+      <div>取得成绩：{{item.education_describe}}</div>
+      <div class="esplititem"></div>
     </div>
+    <br>
 
     <div>联系方式:</div>
-    <div>微信:{{contact.weixin}}</div>
-    <div>qq:{{contact.qq}}</div>
-    <div>电话:{{contact.tel}}</div>
-    <div>网站:{{contact.web}}</div>
-    <div>微博:{{contact.weibo}}</div>
+    <div class="citem">
+      <div>微信:{{contact.weixin}}</div>
+      <div>其他:{{contact.other}}</div>
+    </div>
     <br>
     
     <div>留言:</div>
-    <button>发送</button>
-    <textarea class='idmessage'/>
+    <button v-on:click="OnSendMsg()">发送</button>
+    <textarea id="idMsg" class='idmessage'/>
     
     <div v-for="(item,index) in message" >
       <div>
@@ -191,22 +246,62 @@
   </div>
 </template>
 <style>
+.citem{
+  margin-left: 10px;
+}
+.eitem{
+  margin-left: 10px;
+}
+.wsplititem,.esplititem{
+  width: 300px;
+  margin-bottom: 5px;
+  border: 1px solid red;
+}
+.workItem{
+  margin-left: 10px;
+}
+.wcontent{
+  
+}
+.limg{
+  width: 180px;
+  height: 101px;
+}
+.myprogramlist{
+  display: grid;
+  grid-template-columns:repeat(auto-fill,200px);
+}
+.myprogramItem{
+  /* border:1px solid red; */
+  margin-left: 10px;
+}
+.myprogramItem:hover{
+  border:1px solid red; 
+}
+.detailsDiv{
+  margin-left: 10px;
+  margin-right: 10px;
+  /* border: 1px solid red; */
+  color: coral;
+  
+}
 .PersonDetailes{
   clear: both;
   min-height: 100vh;
   border: 1px solid indianred;
+  padding-left: 10px;
 }
 .pbase{
-  display: float;  
+  display: grid;  
+  grid-template-columns: 180px auto;  
 }
 
-.headpho{
-  float: left;
+.myheadpho{  
+  width: 180px;
   height: 101px;
-  width: 180px;  
-  margin-right: 10px;
-  border: 1px solid green;
-  border-radius: 8%;
+}
+.myinfoDiv{
+  margin-left: 10px;
 }
 
 .province_name,.pname{
@@ -227,9 +322,7 @@
 .firstdiv{
   margin-top: 10px;
 }
-.lstdiv{
-  margin-bottom: 10px;
-}
+
 .idmessage{
   width: 400px;
   height:50px;

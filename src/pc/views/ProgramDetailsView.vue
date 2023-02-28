@@ -153,7 +153,7 @@ onMounted(() => {
         axios.get(curl)
           .then((obj) => {
             Object.assign(personDetail, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-            //console.log('ppersonDetail:',obj.data)
+            console.log('ppersonDetail:',obj.data)
           }).catch((err) => {
               alert('连接服务器失败，请刷新页面尝试！')
           });
@@ -165,7 +165,7 @@ onMounted(() => {
         axios.get(curl)
           .then((obj) => {
             Object.assign(message, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-            console.log("msg1:",message)
+            //console.log("msg1:",message)
           }).catch((err) => {
               alert('连接服务器失败，请刷新页面尝试！')
           });

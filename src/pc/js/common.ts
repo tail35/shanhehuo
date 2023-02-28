@@ -14,9 +14,6 @@ export var login_urlAction:String = "https://"+Domain+":448/login?v="
 export var  personListUrl:String = "https://"+Domain+":448/PersonList?v="
 export var  pagesNumUrl:String = "https://"+Domain+":448/PagesNumControll?v="
 
-
-
-
 export var  imgUrl:String = "https://"+Domain+":448/shanstatic/"
 
 export var  OnePersonDetailsUrl:String = "https://"+Domain+":448/OnePersonDetails?v="
@@ -45,4 +42,5 @@ export var  JoinDetailsControllUrl:String = "https://"+Domain+":448/JoinDetailsC
 
 export var  JoinInputControllUrl:String = "https://"+Domain+":448/JoinInputControll?v="
 
+export var  OnePersonMsgControllUrl:String = "https://"+Domain+":448/InsertPersonMsgControll?v="
 
