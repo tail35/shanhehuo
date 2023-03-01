@@ -29,7 +29,7 @@ onMounted(()=>{
     if(null == pageindex){
       pageindex = Cookies.get("pageindex")
       if(null == pageindex){
-        pageindex = 0;
+        pageindex = 1;
       }
     }
     Cookies.set("pageindex",pageindex)
@@ -136,7 +136,7 @@ function clickItem( accid ){
         <span>共{{pagesNum.PagesNum}}页,&nbsp;跳转到&nbsp;</span>
         <input id="idpageinput" class="pageinput" v-bind:value="pageCur.value" /> <span>页</span>
       </ul>
-      <div class="pageright">        
+      <div class="pageright">
       </div>
   </div>
   </main>

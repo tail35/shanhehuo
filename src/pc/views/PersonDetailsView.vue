@@ -16,10 +16,14 @@
       WorkUrl,
       EducationUrl,
       MessageUrl,
-      OnePersonMsgControllUrl
+      OnePersonMsgControllUrl,
+      personMsgPagesNumUrl
     } from "../js/common.ts"
     import {SubmitRegister} from "../js/register"
     import axios from 'axios' //dhlu
+    import PersonMsg from "../components/PersonMsg.vue"
+
+
     const {ctx,proxy} = getCurrentInstance()
     //ref: https://qa.1r1g.com/sf/ask/4601250111/
     let personDetail=reactive({}) //如果对象变了，就失去了响应性。只能把值赋给原有代理。
@@ -28,10 +32,47 @@
     let work = reactive({})
     let education = reactive({})
     let message = reactive({})
-    
+    var PersonMsgPageCur=reactive({value:1})
+    var pmpagesNum=reactive({})
+
     window.myonload =function(){
     }
 
+    function GetPageNum() {
+    var accid = proxy.$router.currentRoute.value.query.accid
+    var myurl = personMsgPagesNumUrl+Math.random() +"&toaccid="+accid
+    //console.log(pagesNumUrl)
+    axios.get( myurl )
+        .then((obj) => {
+          Object.assign(pmpagesNum,obj.data)
+          //console.log('pagesNum:',pagesNum)
+          //flush
+        }).catch((err) => {
+            alert('连接服务器失败，请刷新页面尝试！')
+        });
+  }
+
+
+    function GetMessage(pageindex){
+        if(null == pageindex){
+          pageindex = Cookies.get("PersonMsgPageindex")
+          if(null == pageindex){
+            pageindex = 1;
+          }
+        }
+        Cookies.set("PersonMsgPageindex",pageindex)
+        PersonMsgPageCur.value = pageindex;
+    
+        var accid = proxy.$router.currentRoute.value.query.accid
+        let curl =MessageUrl +Math.random()+"&accid="+accid+"&page="+pageindex
+        axios.get(curl)
+          .then((obj) => {
+            Object.assign(message, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+            //console.log('message:', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+          }).catch((err) => {
+              alert('连接服务器失败，请刷新页面尝试！')
+          });
+}
     function OnSendMsg()
     {
       
@@ -49,14 +90,15 @@
             
       //var tmp = JSON.stringify(arr)
       //axios data 必须是array对象，不要自己string化。
+      //插入聊天数据
       axios.post( curl,arr)
           .then((obj) => {
-            if( 0 == obj.data ){
-              console.log("person")
+            console.log("obj:",obj.data)
               if(0 == obj.data.code){
+                //reload message.
                 
-              }
-            }
+                GetMessage(1);
+              }            
           }).catch((err) => {
               alert('连接服务器失败，请刷新页面尝试！')
           });
@@ -136,23 +178,14 @@
               alert('连接服务器失败，请刷新页面尝试！')
           });
       }
-      function GetMessage(){
-        var accid = proxy.$router.currentRoute.value.query.accid
-        let curl =MessageUrl +Math.random()+"&accid="+accid
-        axios.get(curl)
-          .then((obj) => {
-            Object.assign(message, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-            //console.log('message:', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-          }).catch((err) => {
-              alert('连接服务器失败，请刷新页面尝试！')
-          });
-      }
+
       GetPersonDetails()
       GetPrograms()
       GetContact()
       GetWork()
       GetEducation()
-      GetMessage()
+      GetMessage(1)
+      GetPageNum()
 
     });//end onMounted
 </script>
@@ -231,21 +264,33 @@
     <div>留言:</div>
     <button v-on:click="OnSendMsg()">发送</button>
     <textarea id="idMsg" class='idmessage'/>
-    
-    <div v-for="(item,index) in message" >
-      <div>
-        <span>
-          <img class="msg_head" v-bind:src="imgUrl+item.imgurl">
-          <span class="mname">{{item.name}}</span>
-          <span class="mtime">{{item.create_time}}</span>
-        </span>
+    <!-- //留言列表组件 -->
+    <PersonMsg :message="message"></PersonMsg>
+    <div class="pmpagetable">
+      <ul class="pmpagination">
+        当前是第<a class="pmcurpagea">{{PersonMsgPageCur.value}}</a>页,&nbsp;
+        <span>共{{pmpagesNum.PagesNum}}页,&nbsp;跳转到&nbsp;</span>
+        <input id="idpmpageinput" class="pmpageinput" v-bind:value="PersonMsgPageCur.value" /> <span>页</span>
+      </ul>
+      <div class="pmpageright">
       </div>
-      <div class="msg_message">{{item.message}}</div>
     </div>
 
   </div>
 </template>
 <style>
+.pmcurpagea{
+  color: red;
+}
+.pmpageinput{
+  width: 60px;
+}
+.pmpagetable{
+  display: grid;
+  grid-template-columns:auto auto;
+  border: 1px solid red;
+}
+
 .citem{
   margin-left: 10px;
 }
@@ -330,17 +375,5 @@
   display: block;
   margin-bottom: 10px;
 }
-.msg_head
-{
-  width: 20px;
-  height: 11px;
-  border: 1px solid greenyellow;
-  margin-right: 10px;
-}
-.mname{
-  margin-right: 10px;
-}
-.msg_message{
-  margin-left: 20px;
-}
+
 </style>
