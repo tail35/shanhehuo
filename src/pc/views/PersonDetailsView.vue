@@ -31,12 +31,28 @@
     let contact = reactive({})
     let work = reactive({})
     let education = reactive({})
-    let message = reactive({})
+    let message = ref([])//数组用ref。 x.value=obj.data.
     var PersonMsgPageCur=reactive({value:1})
     var pmpagesNum=reactive({})
+    
 
     window.myonload =function(){
     }
+
+  //   function JumpToPage(page){
+  //   proxy.$router.push({name:'HomeView',query: {pageindex:page}})
+  //   proxy.$forceUpdate()
+  //   UpdateKey()
+  // }
+
+  function isNumber(theObj) {
+      var reg = /^[0-9]+.?[0-9]*$/;
+      if (reg.test(theObj)) {
+        return true;
+      }
+  return false;
+}
+
 
     function GetPageNum() {
     var accid = proxy.$router.currentRoute.value.query.accid
@@ -50,7 +66,7 @@
         }).catch((err) => {
             alert('连接服务器失败，请刷新页面尝试！')
         });
-  }
+    }
 
 
     function GetMessage(pageindex){
@@ -66,9 +82,8 @@
         var accid = proxy.$router.currentRoute.value.query.accid
         let curl =MessageUrl +Math.random()+"&accid="+accid+"&page="+pageindex
         axios.get(curl)
-          .then((obj) => {
-            Object.assign(message, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-            //console.log('message:', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+          .then((obj) => {                     
+            message.value = obj.data                    
           }).catch((err) => {
               alert('连接服务器失败，请刷新页面尝试！')
           });
@@ -179,6 +194,21 @@
           });
       }
 
+      var idpmpageinput = document.getElementById("idpmpageinput")  
+      idpmpageinput.onblur = function(){
+        var page = idpmpageinput.value
+        if( null == page){
+          return
+        }
+        if(false == isNumber(page) || "0"==page){
+          alert('只能输入正整数!')
+          return
+        }
+        console.log("page111:",page)
+        GetMessage(page)
+      }
+
+
       GetPersonDetails()
       GetPrograms()
       GetContact()
@@ -265,7 +295,7 @@
     <button v-on:click="OnSendMsg()">发送</button>
     <textarea id="idMsg" class='idmessage'/>
     <!-- //留言列表组件 -->
-    <PersonMsg :message="message"></PersonMsg>
+    <PersonMsg :message="message" ></PersonMsg>
     <div class="pmpagetable">
       <ul class="pmpagination">
         当前是第<a class="pmcurpagea">{{PersonMsgPageCur.value}}</a>页,&nbsp;
@@ -279,6 +309,7 @@
   </div>
 </template>
 <style>
+
 .pmcurpagea{
   color: red;
 }

@@ -2,10 +2,14 @@
 const props = defineProps<{
   message: Array
 }>()
+import {
+      imgUrl
+} from "../js/common.ts"
 </script>
 
 <template>
-    <div v-for="(item,index) in props.message" >
+    
+    <div v-for="(item,index) in props.message"  >
       <div>
         <span>
           <img class="msg_head" v-bind:src="imgUrl+item.imgurl">
