@@ -27,11 +27,11 @@ onMounted(() => {
     var accid= proxy.$router.currentRoute.value.query.accid
     var programid= proxy.$router.currentRoute.value.query.programid
     let curl = JoinDetailsControllUrl+Math.random()+"&accid="+accid+"&programid="+programid
-    console.log('detailsurl:',curl)
+    //console.log('detailsurl:',curl)
     axios.get(curl)
       .then((obj) =>{
         joinDetails.value = obj.data //数组是基本类型。用ref
-        console.log('joinDetails:',joinDetails)
+        //console.log('joinDetails:',joinDetails)
       }).catch((err) => {
           alert('连接服务器失败，请刷新页面尝试！')
       });

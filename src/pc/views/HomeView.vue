@@ -94,7 +94,7 @@ const mytag = computed(() => {
 const myUrl = computed(() => {
   return (item)=>{
     var url = imgUrl+item.imgurl+"?v="+Math.random()
-    console.log("h:",url)
+    //console.log("h:",url)
     return url
   }
 })

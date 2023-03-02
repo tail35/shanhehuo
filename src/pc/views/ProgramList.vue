@@ -36,7 +36,7 @@ onMounted(()=>{
     Cookies.set("Propageindex",Propageindex)
 
     PropageCur.value = Propageindex;
-    console.log("PropageCur:",PropageCur)
+    //console.log("PropageCur:",PropageCur)
     var myurl = ProgramListControllUrl+Math.random()+"&page="+Propageindex
     axios.get(myurl)
           .then((obj) => {
@@ -52,7 +52,7 @@ onMounted(()=>{
     axios.get( myurl )
         .then((obj) => {
           Object.assign(PropagesNum,obj.data)
-          console.log('PropagesNum:',PropagesNum)
+          //console.log('PropagesNum:',PropagesNum)
           //flush
 
         }).catch((err) => {

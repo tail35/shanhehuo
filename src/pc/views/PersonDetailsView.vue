@@ -15,7 +15,7 @@
       ContactUrl,
       WorkUrl,
       EducationUrl,
-      MessageUrl,
+      PersonMessageUrl,
       OnePersonMsgControllUrl,
       personMsgPagesNumUrl
     } from "../js/common.ts"
@@ -80,7 +80,7 @@
         PersonMsgPageCur.value = pageindex;
     
         var accid = proxy.$router.currentRoute.value.query.accid
-        let curl =MessageUrl +Math.random()+"&accid="+accid+"&page="+pageindex
+        let curl =PersonMessageUrl +Math.random()+"&accid="+accid+"&page="+pageindex
         axios.get(curl)
           .then((obj) => {                     
             message.value = obj.data                    
@@ -101,17 +101,16 @@
       var arr={};
       arr.toaccid=proxy.$router.currentRoute.value.query.accid
       arr.fromaccid=Cookies.get("myaccid")
-      arr.msg = idMsg.value
+      arr.message = idMsg.value
             
       //var tmp = JSON.stringify(arr)
       //axios data 必须是array对象，不要自己string化。
       //插入聊天数据
       axios.post( curl,arr)
           .then((obj) => {
-            console.log("obj:",obj.data)
+            //console.log("obj:",obj.data)
               if(0 == obj.data.code){
-                //reload message.
-                
+                //reload message.                
                 GetMessage(1);
               }            
           }).catch((err) => {

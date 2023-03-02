@@ -15,7 +15,7 @@ export var  personListUrl:String = "https://"+Domain+":448/PersonList?v="
 export var  pagesNumUrl:String = "https://"+Domain+":448/PagesNumControll?v="
 
 export var  personMsgPagesNumUrl:String = "https://"+Domain+":448/PersonMsgPagesNumControll?v="
-
+export var  ProgramMsgPagesNumUrl:String = "https://"+Domain+":448/ProgramMsgPagesNumControll?v="
 
 
 export var  imgUrl:String = "https://"+Domain+":448/shanstatic/"
@@ -28,7 +28,12 @@ export var  ContactUrl:String = "https://"+Domain+":448/ContactControll?v="
 export var  WorkUrl:String = "https://"+Domain+":448/WorkControll?v="
 export var  EducationUrl:String = "https://"+Domain+":448/EducationControll?v="
 
-export var  MessageUrl:String = "https://"+Domain+":448/MessageControll?v="
+export var  PersonMessageUrl:String = "https://"+Domain+":448/PersonMessageControll?v="
+export var  ProgramMessageUrl:String = "https://"+Domain+":448/ProgramMessageControll?v="
+
+
+
+
 export var  ProgramListControllUrl:String = "https://"+Domain+":448/ProgramListControll?v="
 export var  PropagesNumUrl:String = "https://"+Domain+":448/ProgramPagesNumControll?v="
 
@@ -47,4 +52,5 @@ export var  JoinDetailsControllUrl:String = "https://"+Domain+":448/JoinDetailsC
 export var  JoinInputControllUrl:String = "https://"+Domain+":448/JoinInputControll?v="
 
 export var  OnePersonMsgControllUrl:String = "https://"+Domain+":448/InsertPersonMsgControll?v="
+export var  OneInsertProgramMsgUrl:String = "https://"+Domain+":448/InsertProgramMsgControll?v="
 

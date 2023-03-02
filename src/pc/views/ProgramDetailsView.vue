@@ -9,25 +9,84 @@ import {imgUrl,login_urlAction,
   login_urlImg,ProgramDetailControllUrl,
   ProgramImgeControllUrl,PartnerNamesControllUrl,
   InterestedControllUrl,OnePersonDetailsUrl,
-  ProgramDetailByAccidControllUrl,MessageUrl 
+  ProgramDetailByAccidControllUrl,MessageUrl ,
+  ProgramMessageUrl,
+  OneInsertProgramMsgUrl
 } from "../js/common.ts"
 import {SubmitRegister} from "../js/register"
 import axios from 'axios' //dhlu
 import { objectExpression } from '@babel/types';
+import ProgramMsg from "../components/ProgramMsg.vue"
 
 const UpdateKey = inject('UpdateKey');
 const {ctx,proxy} = getCurrentInstance()
 
-let message = reactive({})
+let message = ref([])
 var programDetail = reactive({})
 var programImgesUrls = ref([])//注意对象数据有区别。
 var PartnerNames = ref([])
 var Interested = ref([])
 var personDetail = reactive({})
 var programDetailByAccid = ref([])
+var ProgramMsgPageCur=reactive({value:1})
+var ProgramPagesNum=reactive({})
+
 window.myonload =function(){
 }
 
+function isNumber(theObj) {
+      var reg = /^[0-9]+.?[0-9]*$/;
+      if (reg.test(theObj)) {
+        return true;
+      }
+  return false;
+}
+
+function GetPageNum() {
+    var accid = proxy.$router.currentRoute.value.query.accid
+    var programid= proxy.$router.currentRoute.value.query.programid
+    var myurl = ProgramMsgPagesNumUrl+Math.random() +"&toaccid="+accid+"&programid="+ programid
+    //console.log(pagesNumUrl)
+    axios.get( myurl )
+        .then((obj) => {
+          Object.assign(ProgramPagesNum,obj.data)
+          //console.log('pagesNum:',pagesNum)
+          //flush
+        }).catch((err) => {
+            alert('连接服务器失败，请刷新页面尝试！')
+        });
+    }
+
+    function OnProgramSendMsg()
+    {
+      
+      var idProgramMsg = document.getElementById("idProgramMsg")
+      if (null==idProgramMsg || ""== idProgramMsg.value ){
+        return
+      }
+
+      let curl = OneInsertProgramMsgUrl+Math.random()
+      //axios.post(curl,idMsg.value,{ headers: {'Content-Type': 'text/plain'} })
+      var arr={};
+      arr.toaccid=proxy.$router.currentRoute.value.query.accid
+      arr.fromaccid=Cookies.get("myaccid")
+      arr.programid = proxy.$router.currentRoute.value.query.programid
+      arr.message = idProgramMsg.value
+            
+      //var tmp = JSON.stringify(arr)
+      //axios data 必须是array对象，不要自己string化。
+      //插入聊天数据
+      axios.post( curl,arr)
+          .then((obj) => {            
+              if(0 == obj.data.code){
+                //reload message.
+                console.log("msg:",obj.data)
+                GetMessage(1);
+              }            
+          }).catch((err) => {
+              alert('连接服务器失败，请刷新页面尝试！')
+          });
+    }
 
 
 const myurl = computed(() => {
@@ -67,6 +126,29 @@ function OnClicklstDiv(item)
   UpdateKey()
   //console.log(item.accid,item.programid);
 }
+function GetMessage(pageindex){
+      if(null == pageindex){
+          pageindex = Cookies.get("PersonMsgPageindex")
+          if(null == pageindex){
+            pageindex = 1;
+          }
+        }
+        Cookies.set("ProgramMsgPageindex",pageindex)
+        ProgramMsgPageCur.value = pageindex;
+
+        var accid= proxy.$router.currentRoute.value.query.accid
+        var programid= proxy.$router.currentRoute.value.query.programid
+        let curl =ProgramMessageUrl +Math.random()+"&accid="+accid+"&page="+pageindex+"&programid="+programid
+        //console.log('222iurl:',curl)
+        axios.get(curl)
+          .then((obj) => {
+            message.value = obj.data
+            //console.log("msg1:",message)
+          }).catch((err) => {
+              alert('连接服务器失败，请刷新页面尝试！')
+          });
+}
+
 // 生命周期钩子
 onMounted(() => {
   function GetImgesUrl()
@@ -153,31 +235,33 @@ onMounted(() => {
         axios.get(curl)
           .then((obj) => {
             Object.assign(personDetail, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-            console.log('ppersonDetail:',obj.data)
-          }).catch((err) => {
-              alert('连接服务器失败，请刷新页面尝试！')
-          });
-    }
-    function GetMessage(){
-        var accid= proxy.$router.currentRoute.value.query.accid
-        let curl =MessageUrl +Math.random()+"&accid="+accid
-        console.log('222iurl:',curl)
-        axios.get(curl)
-          .then((obj) => {
-            Object.assign(message, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-            //console.log("msg1:",message)
+            //console.log('ppersonDetail:',obj.data)
           }).catch((err) => {
               alert('连接服务器失败，请刷新页面尝试！')
           });
     }
 
+    //获取当前页
+    var idProgramPageinput = document.getElementById("idProgramPageinput")  
+    idProgramPageinput.onblur = function(){
+        var page = idProgramPageinput.value
+        if( null == page){
+          return
+        }
+        if(false == isNumber(page) || "0"==page){
+          alert('只能输入正整数!')
+          return
+        }
+        //console.log("page111:",page)
+        GetMessage(page)
+      }
    GetImgesUrl()
    GetProgramDetail()
    GetPartnerNanmes()
    GetInterestedControll()
    GetPersonDetails()
    GetProgramDetailByAccid()
-   GetMessage()
+   GetMessage(1)
 });
 </script>
 <template>
@@ -219,23 +303,45 @@ onMounted(() => {
     <br>
     
     <div>留言:</div>
-    <button>发送</button>
-    <textarea class='idmessage'/>
-    
-    <div v-for="(item,index) in message" >
-      <div>
-        <span>
-          <img class="msg_head" v-bind:src="imgUrl+item.imgurl">
-          <span class="mname">{{item.name}}</span>
-          <span class="mtime">{{item.create_time}}</span>
-        </span>
+    <button v-on:click="OnProgramSendMsg()">发送</button>
+    <textarea id="idProgramMsg" class='ProgramMessage'/>
+    <!-- program留言 -->
+    <ProgramMsg :message="message" > </ProgramMsg>
+    <div class="ProgramPagetable">
+      <ul class="ProgramPagination">
+        当前是第<a class="ProgramCurPage">{{ProgramMsgPageCur.value}}</a>页,&nbsp;
+        <span>共{{ProgramPagesNum.PagesNum}}页,&nbsp;跳转到&nbsp;</span>
+        <input id="idProgramPageinput" class="ProgramPageinput" v-bind:value="ProgramMsgPageCur.value" /> <span>页</span>
+      </ul>
+      <div class="ProgramPageRight">
       </div>
-      <div class="msg_message">{{item.message}}</div>
     </div>
 
   </div>
 </template>
 <style>
+
+.ProgramMessage{
+  width: 400px;
+  height:50px;
+  border: 1px solid red;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.ProgramCurPage{
+  color: red;
+}
+.ProgramPageinput{
+  width: 60px;
+}
+.ProgramPagetable{
+  display: grid;
+  grid-template-columns:auto auto;
+  border: 1px solid red;
+}
+
+
 .PersonDetailes{
   min-height: 100vh;
   border: 1px solid indianred;

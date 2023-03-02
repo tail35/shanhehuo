@@ -63,7 +63,7 @@
 
     window.RegisterResult = function(data)
     {
-      console.log(data)      
+      //console.log(data)      
       alert(data.msg)      
     }
     
