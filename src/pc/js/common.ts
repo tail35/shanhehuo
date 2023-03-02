@@ -51,6 +51,6 @@ export var  JoinDetailsControllUrl:String = "https://"+Domain+":448/JoinDetailsC
 
 export var  JoinInputControllUrl:String = "https://"+Domain+":448/JoinInputControll?v="
 
-export var  OnePersonMsgControllUrl:String = "https://"+Domain+":448/InsertPersonMsgControll?v="
-export var  OneInsertProgramMsgUrl:String = "https://"+Domain+":448/InsertProgramMsgControll?v="
+export var  InsertPersonMsgUrl:String = "https://"+Domain+":448/InsertPersonMsgControll?v="
+export var  InsertProgramMsgUrl:String = "https://"+Domain+":448/InsertProgramMsgControll?v="
 

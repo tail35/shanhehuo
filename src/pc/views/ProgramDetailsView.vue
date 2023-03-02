@@ -11,7 +11,7 @@ import {imgUrl,login_urlAction,
   InterestedControllUrl,OnePersonDetailsUrl,
   ProgramDetailByAccidControllUrl,MessageUrl ,
   ProgramMessageUrl,
-  OneInsertProgramMsgUrl
+  InsertProgramMsgUrl
 } from "../js/common.ts"
 import {SubmitRegister} from "../js/register"
 import axios from 'axios' //dhlu
@@ -65,7 +65,7 @@ function GetPageNum() {
         return
       }
 
-      let curl = OneInsertProgramMsgUrl+Math.random()
+      let curl = InsertProgramMsgUrl+Math.random()
       //axios.post(curl,idMsg.value,{ headers: {'Content-Type': 'text/plain'} })
       var arr={};
       arr.toaccid=proxy.$router.currentRoute.value.query.accid
@@ -264,25 +264,31 @@ onMounted(() => {
    GetMessage(1)
 });
 </script>
-<template>
-  <div class="PersonDetailes">     
-    <div>
-      <img v-bind:src="myurl(programImgesUrls)" id="idProgramImg"  class="programimg" />    
-    </div>
+<template>  
+  <div class="PersonDetailes">
+    <br/>
+    <div>产品图片:</div>
+    <table class="pimg">
+      <tr>
+        <td v-for="(item,index) in programImgesUrls">
+          <img v-bind:src="imgUrl+item.imgurl" id="idProgramImg"  class="programimg" />    
+        </td>
+      </tr>
+    </table>
     
-    <div>项目名称:{{programDetail.name}}</div>
-    <span>地点:{{programDetail.province_name}}.{{programDetail.city_name}}  &nbsp&nbsp投资金额：{{programDetail.invested_fund}}</span>
-    <div>团队人数:{{programDetail.team_number}}人 &nbsp&nbsp <span>浏览人数:{{programDetail.browse_numbers}}</span><span>&nbsp&nbsp发布时间:{{programDetail.create_time}}</span></div>
+    <div>项目名称:&nbsp{{programDetail.name}}</div>
+    <span>地点:&nbsp{{programDetail.province_name}}.{{programDetail.city_name}}  &nbsp&nbsp投资金额:&nbsp{{programDetail.invested_fund}}万元</span>
+    <div>团队人数:&nbsp{{programDetail.team_number}}人 &nbsp&nbsp <span>浏览人数:&nbsp{{programDetail.browse_numbers}}</span><span>&nbsp&nbsp发布时间:&nbsp{{programDetail.create_time}}</span></div>
     <br>
-    <div>项目描述：</div>
+    <div>项目介绍：</div>
     <div>{{programDetail.description}}</div>
     <br>
+    <div>招募信息：</div>
     <div v-for="(item,index) in PartnerNames">
-      <div>本项目找[{{item.partnership_name}}]合伙人,要求：</div>
+      <div>[{{item.partnership_name}}]要求：</div>
       <span>&nbsp&nbsp{{item.join_condition}}</span>
     </div>
     <br>
-    
     <div>
       <span v-for="(item,index) in Interested">
         <img class="inImg" v-bind:src="imgUrl+item.imgurl" />
@@ -353,7 +359,7 @@ onMounted(() => {
 .programimg{
   width:300px;
   height:169px;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 .inImg{
   width: 28px;

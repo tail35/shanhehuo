@@ -16,7 +16,7 @@
       WorkUrl,
       EducationUrl,
       PersonMessageUrl,
-      OnePersonMsgControllUrl,
+      InsertPersonMsgUrl,
       personMsgPagesNumUrl
     } from "../js/common.ts"
     import {SubmitRegister} from "../js/register"
@@ -96,7 +96,7 @@
         return
       }
 
-      let curl = OnePersonMsgControllUrl+Math.random()
+      let curl = InsertPersonMsgUrl+Math.random()
       //axios.post(curl,idMsg.value,{ headers: {'Content-Type': 'text/plain'} })
       var arr={};
       arr.toaccid=proxy.$router.currentRoute.value.query.accid
@@ -154,7 +154,7 @@
         axios.get(curl)
           .then((obj) => {        
             Object.assign(programs, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-            //console.log('programs:',obj.data)
+            console.log('programs:',obj.data)
           }).catch((err) => {
               alert('连接服务器失败，请刷新页面尝试！')
           });
@@ -247,7 +247,7 @@
     他的项目列表：
     </div>
     <div class="myprogramlist" >
-      <div class="myprogramItem" v-on:click="MylImgClick(item)"  v-for="(item,index) in programs">
+      <div class="myprogramItem" v-for="(item,index) in programs" v-on:click="MylImgClick(item)"  >
         <img class="limg" v-bind:src="imgUrl+item.imgurl" />
         <div class="firstdiv">项目名称：{{item.name}}</div>
       </div>
