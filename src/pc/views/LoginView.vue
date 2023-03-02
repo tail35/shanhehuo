@@ -21,6 +21,7 @@
     import {SubmitRegister} from "../js/register"
 
     const {ctx,proxy} = getCurrentInstance()
+    var myaccid="";
     //判断手机号是否合法
     window.isPhoneNumber = function(tel) {
         var reg =/^0?1[3|4|5|6|7|8][0-9]\d{8}$/;
@@ -30,7 +31,7 @@
     window.MySubmitButton = function()
     {
       //phoneNumber
-      var myvalue = document.getElementById('idphone').value
+      var myvalue = myaccid =document.getElementById('idphone').value
       if(!myvalue){
         alert("手机号码不能空!")
         return
@@ -60,8 +61,8 @@
       console.log(data)
       if('res'==data.action && 0==data.code){
         Cookies.set('isLogin',"true",{expires: 7})
-        Cookies.set('myaccid',document.getElementById('idphone').value,{expires: 7})
-        proxy.$router.push({name:'home',params: {id:'1'}})//query url后跟id,params 是post 刷新丢失id
+        Cookies.set('myaccid',myaccid,{expires: 7})
+        proxy.$router.push({name:'HomeView',params: {id:'1'}})//query url后跟id,params 是post 刷新丢失id
         
       }else{
         alert(data.msg)

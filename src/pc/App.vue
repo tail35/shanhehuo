@@ -103,7 +103,7 @@ provide("UpdateKey", UpdateKey);
         <!-- <RouterLink to="/publish" class="item publish">发布</RouterLink> -->
       </div>
       <!-- if login end -->
-    </div>    
+    </div>
     <RouterView class="content" :key="routerKey" > </RouterView>
     <!-- <RouterView class="content" id="idrv" v-if="tshow" > </RouterView> -->
     <div class="footermenu">
