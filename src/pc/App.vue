@@ -100,7 +100,7 @@ provide("UpdateKey", UpdateKey);
         
         <div id="idexitlogin" class="item exitlogin">退出</div>
         <div class="item myheadimg" >182...</div>
-        <RouterLink to="/publish" class="item publish">发布</RouterLink>
+        <!-- <RouterLink to="/publish" class="item publish">发布</RouterLink> -->
       </div>
       <!-- if login end -->
     </div>    
