@@ -232,13 +232,13 @@
         <span class="province_name">城市：{{personDetail.province_name}}.{{personDetail.city_name}}</span>
         <span class="role">&nbsp;&nbsp;<a>角色</a>：{{personDetail.partnership_name}}</span>
         <div class="tag">创业标签：{{personDetail.tag}}</div>
-        <div class="simple_introduce">简介：{{personDetail.simple_introduce}}</div>
+        <div class="simple_introduce">个人简介：{{personDetail.simple_introduce}}</div>
       </div>
     </div>
     <br>
     
     <div class="myDetails">
-      <div>个人详细描述：</div>
+      <div>详细描述：</div>
       <div class="detailsDiv">{{personDetail.myDetails}}</div>
     </div>
 
@@ -297,7 +297,7 @@
     <PersonMsg :message="message" ></PersonMsg>
     <div class="pmpagetable">
       <ul class="pmpagination">
-        当前是第<a class="pmcurpagea">{{PersonMsgPageCur.value}}</a>页,&nbsp;
+        当前留言是第<a class="pmcurpagea">{{PersonMsgPageCur.value}}</a>页,&nbsp;
         <span>共{{pmpagesNum.PagesNum}}页,&nbsp;跳转到&nbsp;</span>
         <input id="idpmpageinput" class="pmpageinput" v-bind:value="PersonMsgPageCur.value" /> <span>页</span>
       </ul>

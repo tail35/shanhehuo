@@ -275,12 +275,14 @@ onMounted(() => {
         </td>
       </tr>
     </table>
-    
-    <div>项目名称:&nbsp{{programDetail.name}}</div>
+    <div>
+      <span>项目名称:&nbsp{{programDetail.name}}</span><span>&nbsp;简介:&nbsp;{{programDetail.simpleInfo}}</span>
+    </div>
     <span>地点:&nbsp{{programDetail.province_name}}.{{programDetail.city_name}}  &nbsp&nbsp投资金额:&nbsp{{programDetail.invested_fund}}万元</span>
-    <div>团队人数:&nbsp{{programDetail.team_number}}人 &nbsp&nbsp <span>浏览人数:&nbsp{{programDetail.browse_numbers}}</span><span>&nbsp&nbsp发布时间:&nbsp{{programDetail.create_time}}</span></div>
+    <div>团队人数:&nbsp{{programDetail.team_number}}人 &nbsp&nbsp <span>浏览人数:&nbsp{{programDetail.browse_numbers}}</span></div>
+    <div>发布时间:&nbsp{{programDetail.create_time}}</div>
     <br>
-    <div>项目介绍：</div>
+    <div>详细信息：</div>
     <div>{{programDetail.description}}</div>
     <br>
     <div>招募信息：</div>
@@ -300,12 +302,16 @@ onMounted(() => {
     <br>
 
     <div>本项目由[{{personDetail.name}}]发布&nbsp&nbsp<button v-on:click="OnLookupInfo()">查看他信息 </button></div>
-    <div>他的所有项目如下：</div>
-    <div v-for="(item,index) in programDetailByAccid" >
-      <div class="lstdiv" v-on:click="OnClicklstDiv(item)">
-        <img v-bind:src="imgUrl+item.imgurl" class="lstimg" />&nbsp&nbsp<span>{{item.name}}</span>
-      </div>
-    </div>
+    <br/>
+    <div>他的项目列表：</div>
+    <table>
+      <tr>
+        <td class="lsttd" v-for="(item,index) in programDetailByAccid"  v-on:click="OnClicklstDiv(item)">
+          <img v-bind:src="imgUrl+item.imgurl" class="lstimg" />
+          <div>项目名称：{{item.name}}</div>
+        </td>
+      </tr>
+    </table>
     <br>
     
     <div>留言:</div>
@@ -315,7 +321,7 @@ onMounted(() => {
     <ProgramMsg :message="message" > </ProgramMsg>
     <div class="ProgramPagetable">
       <ul class="ProgramPagination">
-        当前是第<a class="ProgramCurPage">{{ProgramMsgPageCur.value}}</a>页,&nbsp;
+        当前留言是第<a class="ProgramCurPage">{{ProgramMsgPageCur.value}}</a>页,&nbsp;
         <span>共{{ProgramPagesNum.PagesNum}}页,&nbsp;跳转到&nbsp;</span>
         <input id="idProgramPageinput" class="ProgramPageinput" v-bind:value="ProgramMsgPageCur.value" /> <span>页</span>
       </ul>
@@ -368,16 +374,15 @@ onMounted(() => {
   border: 1px solid red;
 }
 .lstimg{
-  width: 28px;
-  height: 16px;
+  width: 180px;
+  height: 101px;
 }
-.lstdiv{
+/* .lsttd{
   width: fit-content;
   border: 1px solid red;
   border-radius: 5px;
-}
-.lstdiv:hover{
-  border-color: aquamarine;
-  border: 2px solid;
+} */
+.lsttd:hover{
+  border: 1px solid red;    
 }
 </style>

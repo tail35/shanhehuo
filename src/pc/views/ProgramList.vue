@@ -108,7 +108,7 @@ function clickItem( accid,programid ){
           <span class="pwname"><span class="ptext"><a>名称</a>：</span>&nbsp;{{item.name}}  <span class="huoyue">&nbsp;&nbsp;<a>上次活跃时间:</a>&nbsp;{{item.modified_time}}</span></span>
           <br>
           <div class="pshanchang"><a>团队人数：</a>{{item.team_number}}&nbsp;&nbsp;<a>投入资金：</a>{{item.invested_fund}}</div>
-          <div class="pjingyan"><a>城市：</a>&nbsp;{{item.province_name}}.{{item.city_name}}&nbsp;&nbsp;<a>详情：</a>&nbsp;{{item.description}}</div>
+          <div class="pjingyan"><a>城市：</a>&nbsp;{{item.province_name}}.{{item.city_name}}&nbsp;&nbsp;<a>简介：</a>&nbsp;{{item.simpleInfo}}</div>
         </div>      
     </div>
     <br>
