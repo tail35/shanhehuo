@@ -52,7 +52,12 @@ window.myp = function () {
   
 }
 function MyInfoClick(){
-  proxy.$router.push({name:'MyInfoEditView',query: {accid:'1'}})//query: url后跟id,params: 是post 刷新丢失id
+  var accid = Cookies.get("myaccid")
+  if( "false" == Cookies.get('isLogin') || null == accid ){
+    alert("请先登录。谢谢。")
+    return;
+  }
+  proxy.$router.push({name:'MyInfoEditView',query: {accid:accid}})//query: url后跟id,params: 是post 刷新丢失id
 }
 function MyProgramClick(){
   proxy.$router.push({name:'MyProgramEditView',query: {accid:'1'}})//query url后跟id,params 是post 刷新丢失id

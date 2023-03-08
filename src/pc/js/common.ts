@@ -31,9 +31,6 @@ export var  EducationUrl:String = "https://"+Domain+":448/EducationControll?v="
 export var  PersonMessageUrl:String = "https://"+Domain+":448/PersonMessageControll?v="
 export var  ProgramMessageUrl:String = "https://"+Domain+":448/ProgramMessageControll?v="
 
-
-
-
 export var  ProgramListControllUrl:String = "https://"+Domain+":448/ProgramListControll?v="
 export var  PropagesNumUrl:String = "https://"+Domain+":448/ProgramPagesNumControll?v="
 
@@ -53,4 +50,12 @@ export var  JoinInputControllUrl:String = "https://"+Domain+":448/JoinInputContr
 
 export var  InsertPersonMsgUrl:String = "https://"+Domain+":448/InsertPersonMsgControll?v="
 export var  InsertProgramMsgUrl:String = "https://"+Domain+":448/InsertProgramMsgControll?v="
+export var  ProVinceUrl:String = "https://"+Domain+":448/ProVinceControll?v="
+export var  CityControllUrl:String = "https://"+Domain+":448/CityControll?v="
+
+export var  CurProvinceCityRoleUrl:String = "https://"+Domain+":448/CurProvinceCityRoleControll?v="
+export var  insertBaseInfoUrl:String = "https://"+Domain+":448/InsertBaseInfoControll?v="
+
+export var  RolsesControllUrl:String = "https://"+Domain+":448/RolsesControll?v="
+
 
