@@ -21,8 +21,10 @@ import {
   CityControllUrl,
   ProVinceUrl,
   CurProvinceCityRoleUrl,
-  insertBaseInfoUrl,
-  RolsesControllUrl
+  UpdateBaseInfoUrl,
+  RolsesControllUrl,
+  UpdateWorkUrl,
+  UpdateEducationkUrl
 } from "../js/common.ts"
 import {SubmitRegister} from "../js/register"
 import axios from 'axios' //dhlu
@@ -35,12 +37,14 @@ const {ctx,proxy} = getCurrentInstance()
 let personDetail=reactive({}) //如果对象变了，就失去了响应性。只能把值赋给原有代理。
 let programs = reactive({})
 let contact = reactive({})
-let work = reactive({})
-let education = reactive({})
+let work = ref([])
+let education = ref([])
 let provicne = ref([])
 let cityList = ref([])
 let CurProvinceCityRole = {}
 let Rolses=ref([])
+
+
 let curRolseIndex=0
 let curProvinceIndex=0
 let curCityIndex=0
@@ -56,6 +60,183 @@ function isNumber(theObj) {
   return false;
 }
 
+function OnContactSubmit()
+{
+  console.log("scn",contact)
+
+}
+
+function DelWork(workex_id)
+{  
+  var i=0;
+  for(;i<work.value.length;i++){
+    if(workex_id == work.value[i].workex_id){ 
+      break
+    }
+  }  
+  if( i<work.value.length){
+    //del    
+    work.value.splice(i,1)
+  }
+}
+
+function OnAddWork()
+{  
+  var obj={}
+  obj.accid = proxy.$router.currentRoute.value.query.accid
+  //obj.workex_id=
+  obj.company_name="name"+(work.value.length+1)
+  obj.jobname=""
+  obj.job_describe=""
+  obj.start_time=""
+  obj.end_time=""  
+  work.value.push( reactive(obj) )
+}
+
+const myid = computed(() => {
+  return (name,index)=>{
+    return name+index
+  }
+})
+
+function OnWorkBlur(name,index)
+{  
+  var id=name+index
+  var idvalue = document.getElementById(id).value
+  console.log("name",name)
+  switch(name){
+    case "company_name":
+      {
+        work.value[index].company_name = idvalue
+      }
+      break    
+    case "jobname":
+      {
+        console.log("name",idvalue)
+        work.value[index].jobname = idvalue
+      }
+      break
+    case "job_describe":
+      {
+        work.value[index].job_describe = idvalue
+      }
+      break
+    case "start_time":
+      {
+        work.value[index].start_time = idvalue
+      }
+      break
+    case "end_time":
+      {
+        work.value[index].end_time = idvalue
+      }
+      break
+  }
+  
+}
+
+
+function OnClickWorkSubmit()
+{
+
+  let curl = UpdateWorkUrl+Math.random()+"&accid="+proxy.$router.currentRoute.value.query.accid
+  
+  axios.post(curl,work.value)//默认json格式
+    .then((obj) =>{      
+      if( null!=obj.data.code && 0==obj.data.code){
+         console.log("subwork:",work.value) 
+        alert("提交成功。")
+      }
+    }).catch((err) => {
+        alert('连接服务器失败，请刷新页面尝试！')
+    }); 
+}
+
+function OnTestSub()
+{ 
+  console.log("education:",education)
+}
+
+function DelEducation(education_id)
+{  
+  var i=0;
+  for(;i<education.value.length;i++){
+    if(education_id == education.value[i].education_id)
+      break
+  }
+  if( i < education.value.length ){
+    //del
+    education.value.splice(i,1)
+  }  
+}
+
+
+function OnEducationBlur(name,index)
+{  
+  var id=name+index
+  var idvalue = document.getElementById(id).value  
+  switch(name){
+    case "name":
+      {
+        education.value[index].name = idvalue
+      }
+      break    
+    case "educational_background":
+      {
+        
+        education.value[index].educational_background = idvalue
+      }
+      break
+    case "major":
+      {
+        education.value[index].major = idvalue
+      }
+      break
+    case "start_time":
+      {
+        education.value[index].start_time = idvalue
+      }
+      break
+    case "end_time":
+      {
+        education.value[index].end_time = idvalue
+      }
+      break
+    case "education_describe":
+      {
+        education.value[index].education_describe = idvalue
+      }
+      break
+  }
+  
+}
+
+
+function OnAddEducation()
+{
+  var obj={}
+  obj.accid=proxy.$router.currentRoute.value.query.accid
+  obj.name="name"+(education.value.length+1)
+  obj.educational_background=""
+  obj.start_time=""
+  obj.end_time=""
+  obj.major=""
+  obj.education_describe=""
+  education.value.push( obj )
+}
+function OnWorkEducationSubmit()
+{
+  let curl = UpdateEducationkUrl+Math.random()+"&accid="+proxy.$router.currentRoute.value.query.accid
+  axios.post(curl,education.value)//默认json格式
+    .then((obj) =>{
+      if( null!=obj.data.code && 0==obj.data.code){
+        alert("提交成功。")
+      }
+    }).catch((err) => {
+        alert('连接服务器失败，请刷新页面尝试！')
+    }); 
+}
+
 function ProvinceChange(innerText)//from 1
 {
   var idProvinceSelect = document.getElementById("idProvinceSelect")
@@ -64,7 +245,7 @@ function ProvinceChange(innerText)//from 1
   // curProvinceIndex = index-1
   // CurProvinceCityRole.province_id = idProvinceSelect[index-1].innerText
   GetCity(CurProvinceCityRole.province_id )
-  console.log("ProvinceChange:",innerText)
+  //console.log("ProvinceChange:",innerText)
 }
 
 function CityChange(innerText)
@@ -73,7 +254,7 @@ function CityChange(innerText)
   CurProvinceCityRole.city_id = innerText
   // curCityIndex = index-1
   // CurProvinceCityRole.city_id = idCitySelect[index-1].innerText
-  console.log("cityindex:",innerText)
+  //console.log("cityindex:",innerText)
 }
 
 function RoleChange(innerText)
@@ -82,7 +263,7 @@ function RoleChange(innerText)
   CurProvinceCityRole.role = innerText
   // curRolseIndex = index-1
   // CurProvinceCityRole.role = idrole[index-1].innerText
-   console.log("RoleChange:",innerText)
+   //console.log("RoleChange:",innerText)
 }
 
 function GetRolses()
@@ -163,13 +344,12 @@ function OnClickBaseInfoSubmit()
   arr.simple_introduce = idSimpleIntroduce
   arr.myDetails = idDetails
 
-  console.log(arr)
+  //console.log(arr)
 
-  let curl = insertBaseInfoUrl+Math.random()
+  let curl = UpdateBaseInfoUrl+Math.random()
   
   axios.post(curl,arr)//默认json格式
-    .then((obj) =>{
-      console.log("11:",obj.data.code)
+    .then((obj) =>{      
       if( null!=obj.data.code && 0==obj.data.code){
         alert("提交成功。")
       }
@@ -178,9 +358,6 @@ function OnClickBaseInfoSubmit()
     });
 }
 
-function OnClickWorkSubmit()
-{
-}
 
 function GetCity(province_id){
     let curl = CityControllUrl+Math.random()+"&province_id="+province_id
@@ -283,8 +460,16 @@ onMounted(() => {
     let curl = ContactUrl+Math.random()+"&accid="+accid
     axios.get(curl)
       .then((obj) => {        
-        Object.assign(contact, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-        //console.log('contact', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+        //for (const key in obj.data) {
+          //contact[key]= obj.data[key].value //这样表达无法显示值，但是可以回馈值。
+        //} 
+        Object.entries(obj.data).forEach(([k, v]) => {
+          contact[k]=v  //属性也是响应式的。          
+        });  
+        //contact.weixin = obj.data.weixin  //这样赋值也可使得属性也是响应式的。          
+        //contact.other = obj.data.other 
+        //Object.assign(contact, obj.data) //这样赋值属性不是响应式的。
+        console.log('contact', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
       }).catch((err) => {
           alert('连接服务器失败，请刷新页面尝试！')
       });
@@ -294,8 +479,7 @@ onMounted(() => {
     let curl = WorkUrl+Math.random()+"&accid="+accid
     axios.get(curl)
       .then((obj) =>{
-        Object.assign(work, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-        //console.log('work:', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+        work.value = obj.data              
       }).catch((err) => {
           alert('连接服务器失败，请刷新页面尝试！')
       });
@@ -305,7 +489,8 @@ onMounted(() => {
     let curl = EducationUrl+Math.random()+"&accid="+accid
     axios.get(curl)
       .then((obj) => {
-        Object.assign(education, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+        education.value = obj.data
+        //Object.assign(education, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
         //console.log('education:', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
       }).catch((err) => {
           alert('连接服务器失败，请刷新页面尝试！')
@@ -386,46 +571,85 @@ onMounted(() => {
 <button v-on:click="OnClickBaseInfoSubmit()">提交</button>
 <div class="epsplit"></div>
 
-<div>工作经历:</div>
-<div class="eworkItem" v-for="(item,index) in work" >
-  <div>公司名称：{{item.company_name}}</div>
-  <div>担任职位：{{item.jobname}}</div>
-  <div>服务时间：{{item.start_time}}--{{item.end_time}}</div>
-  <div class="ewcontent">工作内容：{{item.job_describe}}</div>
-  <div class="ewsplititem"></div>
+<div id="idwork">工作经历:
+  <br>
+  <div class="eworkItem" v-for="(item,index) in work" >
+    <div>
+      <div>公司名称：<input :id="myid('company_name',index)"  type="text" v-on:blur="OnWorkBlur('company_name',index)" v-bind:value="item.company_name"> </div>
+      <div>担任职位：<input :id="myid('jobname',index)"  type="text"  v-on:blur="OnWorkBlur('jobname',index)" v-bind:value="item.jobname"></div>
+      <div>服务时间：<input :id="myid('start_time',index)"  type="text" v-on:blur="OnWorkBlur('start_time',index)" v-bind:value="item.start_time">--<input :id="myid('end_time',index)"  v-on:blur="OnWorkBlur('end_time',index)" type="text" v-bind:value="item.end_time"></div>
+      <div class="ewcontent">工作内容：<input :id="myid('job_describe',index)"  v-on:blur="OnWorkBlur('job_describe',index)" type="text" v-bind:value="item.job_describe"></div>
+      <div class="ewsplititem"></div>
+    </div>
+    <button v-on:click="DelWork(item.workex_id)" class="wdelete">删除</button>
+  </div>
 </div>
 <br>
-<button v-on:click="OnClickWorkSubmit()">提交</button>
+<button v-on:click="OnAddWork()">新增工作经历</button>&nbsp;&nbsp;&nbsp;&nbsp;<button v-on:click="OnClickWorkSubmit()">提交</button>
+
 <div class="epsplit"></div>
 
-<div>教育经历:</div>
-<div class="eitem" v-for="(item,index) in education">
-  <div>学校名称：{{item.name}}</div>
-  <div>学位:{{item.educational_background}}</div>
-  <div>学习时间：{{item.start_time}}--{{item.end_time}}</div>
-  <div>专业名称：{{item.major}}</div>
-  <div>取得成绩：{{item.education_describe}}</div>
-  <div class="eesplititem"></div>
+<div id="ideducation">教育经历:
+  <div class="eitem" v-for="(item,index) in education">
+    <div>
+      <table>
+        <tr>
+          <td>学校名称:</td>
+          <td><input :id="myid('name',index)" v-on:blur="OnEducationBlur('name',index)"  type="text" v-bind:value="item.name"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>学位名称:</td>
+          <td><input :id="myid('educational_background',index)" v-on:blur="OnEducationBlur('educational_background',index)" type="text" v-bind:value="item.educational_background"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>学习时间:</td>
+          <td><input :id="myid('start_time',index)" v-on:blur="OnEducationBlur('start_time',index)" type="text" v-bind:value="item.start_time">--</td>
+          <td><input :id="myid('end_time',index)" v-on:blur="OnEducationBlur('end_time',index)" type="text" v-bind:value="item.end_time"></td>
+        </tr>
+        <tr>
+          <td>专业名称:</td>
+          <td><input :id="myid('major',index)" v-on:blur="OnEducationBlur('major',index)"  type="text" v-bind:value="item.major"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>取得成绩:</td>
+          <td><input :id="myid('education_describe',index)" v-on:blur="OnEducationBlur('education_describe',index)" type="text" v-bind:value="item.education_describe"></td>
+          <td></td>
+        </tr>
+      </table>
+      <!-- <div>学校名称:&nbsp;<input  type="text" v-bind:value="item.name"></div>
+      <div>学位名称:&nbsp;<input  type="text" v-bind:value="item.educational_background"></div>
+      <div>学习时间:&nbsp;<input  type="text" v-bind:value="item.start_time">--<input  type="text" v-bind:value="item.end_time"></div>
+      <div>专业名称:&nbsp;<input  type="text" v-bind:value="item.major"></div>
+      <div>取得成绩:&nbsp;<input  type="text" v-bind:value="item.education_describe"></div> -->
+      <div class="eesplititem"></div>
+    </div>
+    <button v-on:click="DelEducation(item.education_id)" class="wdelete">删除</button>
+  </div>
 </div>
 <br>
-<button>提交</button>
+<button v-on:click="OnAddEducation()">新增教育经历</button>&nbsp;&nbsp;&nbsp;&nbsp;<button v-on:click="OnWorkEducationSubmit()">提交</button>
 <div class="epsplit"></div>
 
 <div>联系方式:</div>
 <div class="ecitem">
-  <div>微信:{{contact.weixin}}</div>
-  <div>其他:{{contact.other}}</div>
+  <div class="cweixin"> <span>微信:</span><input  type="text" v-model="contact.weixin" ></div>
+  <div class="cother"><span>其他:</span><textarea  type="text" v-model="contact.other"></textarea></div>
 </div>
+<button v-on:click="OnContactSubmit()">提交</button>
 <br>
 </div>
 </template>
 <style>
+
 .edetailsDiv{
   width: 600px;
   height: 200px;
 }
 .epsplit{
-  width: 400px;
+  width: 500px;
   margin-top: 10px;
   margin-bottom: 10px;
   border: 1px solid red;
@@ -448,15 +672,22 @@ onMounted(() => {
 margin-left: 10px;
 }
 .eitem{
-margin-left: 10px;
+  margin-left: 10px;
+  display: grid;
+  grid-template-columns: 500px 50px;
 }
 .ewsplititem,.eesplititem{
-width: 300px;
+width: 490px;
 margin-bottom: 5px;
 border: 1px solid red;
 }
 .eworkItem{
-margin-left: 10px;
+  margin-left: 10px;
+  display: grid;
+  grid-template-columns: 500px 50px;
+}
+.wdelete{
+  height: 30px;
 }
 .ewcontent{
 
@@ -496,5 +727,9 @@ height: 101px;
   clear: both;
 }
 
+.cweixin,.cother{
+  display: grid;
+  grid-template-columns:50px 200px ;
+}
 
 </style>

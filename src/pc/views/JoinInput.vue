@@ -71,10 +71,10 @@ function OnSubmit(){
   }
 
   let curl = JoinInputControllUrl+Math.random()
-  console.log('JoinInput:',curl)
+  //console.log('JoinInput:',curl)
   axios.post(curl,arr)//默认json格式
     .then((obj) =>{
-      console.log("11:",obj.data.code)
+      //console.log("11:",obj.data.code)
       if( null!=obj.data.code && 0==obj.data.code){
         alert("提交成功。")
       }

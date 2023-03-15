@@ -54,8 +54,11 @@ export var  ProVinceUrl:String = "https://"+Domain+":448/ProVinceControll?v="
 export var  CityControllUrl:String = "https://"+Domain+":448/CityControll?v="
 
 export var  CurProvinceCityRoleUrl:String = "https://"+Domain+":448/CurProvinceCityRoleControll?v="
-export var  insertBaseInfoUrl:String = "https://"+Domain+":448/InsertBaseInfoControll?v="
+export var  UpdateBaseInfoUrl:String = "https://"+Domain+":448/UpdateBaseInfoControll?v="
 
 export var  RolsesControllUrl:String = "https://"+Domain+":448/RolsesControll?v="
+export var  UpdateWorkUrl:String = "https://"+Domain+":448/UpdateWorkControll?v="
+export var  UpdateEducationkUrl:String = "https://"+Domain+":448/UpdateEducationControll?v="
+
 
 
