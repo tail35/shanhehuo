@@ -34,14 +34,14 @@ import { parse } from '@babel/parser';
 
 const {ctx,proxy} = getCurrentInstance()
 //ref: https://qa.1r1g.com/sf/ask/4601250111/
-let personDetail=reactive({}) //如果对象变了，就失去了响应性。只能把值赋给原有代理。
+let personDetail=ref({}) //ref自动深度属性响应式
 let programs = reactive({})
-let contact = reactive({})
+let contact = ref({})
 let work = ref([])
 let education = ref([])
 let provicne = ref([])
 let cityList = ref([])
-let CurProvinceCityRole = {}
+
 let Rolses=ref([])
 
 
@@ -90,7 +90,7 @@ function OnAddWork()
   obj.job_describe=""
   obj.start_time=""
   obj.end_time=""  
-  work.value.push( reactive(obj) )
+  work.value.push( obj )
 }
 
 const myid = computed(() => {
@@ -99,50 +99,12 @@ const myid = computed(() => {
   }
 })
 
-function OnWorkBlur(name,index)
-{  
-  var id=name+index
-  var idvalue = document.getElementById(id).value
-  console.log("name",name)
-  switch(name){
-    case "company_name":
-      {
-        work.value[index].company_name = idvalue
-      }
-      break    
-    case "jobname":
-      {
-        console.log("name",idvalue)
-        work.value[index].jobname = idvalue
-      }
-      break
-    case "job_describe":
-      {
-        work.value[index].job_describe = idvalue
-      }
-      break
-    case "start_time":
-      {
-        work.value[index].start_time = idvalue
-      }
-      break
-    case "end_time":
-      {
-        work.value[index].end_time = idvalue
-      }
-      break
-  }
-  
-}
-
-
 function OnClickWorkSubmit()
 {
-
   let curl = UpdateWorkUrl+Math.random()+"&accid="+proxy.$router.currentRoute.value.query.accid
   
   axios.post(curl,work.value)//默认json格式
-    .then((obj) =>{      
+    .then((obj) =>{ 
       if( null!=obj.data.code && 0==obj.data.code){
          console.log("subwork:",work.value) 
         alert("提交成功。")
@@ -150,11 +112,6 @@ function OnClickWorkSubmit()
     }).catch((err) => {
         alert('连接服务器失败，请刷新页面尝试！')
     }); 
-}
-
-function OnTestSub()
-{ 
-  console.log("education:",education)
 }
 
 function DelEducation(education_id)
@@ -171,47 +128,6 @@ function DelEducation(education_id)
 }
 
 
-function OnEducationBlur(name,index)
-{  
-  var id=name+index
-  var idvalue = document.getElementById(id).value  
-  switch(name){
-    case "name":
-      {
-        education.value[index].name = idvalue
-      }
-      break    
-    case "educational_background":
-      {
-        
-        education.value[index].educational_background = idvalue
-      }
-      break
-    case "major":
-      {
-        education.value[index].major = idvalue
-      }
-      break
-    case "start_time":
-      {
-        education.value[index].start_time = idvalue
-      }
-      break
-    case "end_time":
-      {
-        education.value[index].end_time = idvalue
-      }
-      break
-    case "education_describe":
-      {
-        education.value[index].education_describe = idvalue
-      }
-      break
-  }
-  
-}
-
-
 function OnAddEducation()
 {
   var obj={}
@@ -224,7 +140,7 @@ function OnAddEducation()
   obj.education_describe=""
   education.value.push( obj )
 }
-function OnWorkEducationSubmit()
+function OnEducationSubmit()
 {
   let curl = UpdateEducationkUrl+Math.random()+"&accid="+proxy.$router.currentRoute.value.query.accid
   axios.post(curl,education.value)//默认json格式
@@ -238,32 +154,26 @@ function OnWorkEducationSubmit()
 }
 
 function ProvinceChange(innerText)//from 1
-{
-  var idProvinceSelect = document.getElementById("idProvinceSelect")
-  CurProvinceCityRole.province_id = innerText
-  //console.log( idProvinceSelect[index-1].label,idProvinceSelect[index-1].innerText)
-  // curProvinceIndex = index-1
-  // CurProvinceCityRole.province_id = idProvinceSelect[index-1].innerText
-  GetCity(CurProvinceCityRole.province_id )
-  //console.log("ProvinceChange:",innerText)
+{  
+  var select = document.getElementById("idProvinceSelect")
+  personDetail.value.province_id  = select[select.selectedIndex].innerText
+  personDetail.value.province_name = select[select.selectedIndex].label
+  GetCity(personDetail.value.province_id  )
 }
 
 function CityChange(innerText)
 {
-  var idCitySelect = document.getElementById("idCitySelect")  
-  CurProvinceCityRole.city_id = innerText
-  // curCityIndex = index-1
-  // CurProvinceCityRole.city_id = idCitySelect[index-1].innerText
-  //console.log("cityindex:",innerText)
+  var select = document.getElementById("idCitySelect") 
+  console.log( personDetail.value.city_id,personDetail.value.city_name )
+  personDetail.value.city_id  = select[select.selectedIndex].innerText
+  personDetail.value.city_name  = select[select.selectedIndex].label
 }
 
 function RoleChange(innerText)
 {
-  var idrole = document.getElementById("idrole")  
-  CurProvinceCityRole.role = innerText
-  // curRolseIndex = index-1
-  // CurProvinceCityRole.role = idrole[index-1].innerText
-   //console.log("RoleChange:",innerText)
+  var select = document.getElementById("idrole")  
+  personDetail.value.partnership_id = select[select.selectedIndex].innerText
+  personDetail.value.partnership_name = select[select.selectedIndex].label  
 }
 
 function GetRolses()
@@ -278,7 +188,7 @@ function GetRolses()
       var i=0
       var index=0
       for( ; i<Rolses.value.length ;i++ ){
-          if( CurProvinceCityRole.role ==  Rolses.value[i].partnership_id )
+          if( personDetail.value.partnership_id ==  Rolses.value[i].partnership_id )
             break
       }
       if( i < Rolses.value.length ){
@@ -296,59 +206,37 @@ function GetRolses()
 }
 
 function OnClickBaseInfoSubmit()
-{
-  var idName = document.getElementById("idName").value
-  if( null==idName || ""==idName){
-    alert("昵称不能空！")
-  }
-  var idRealName = document.getElementById("idRealName").value
-  if( null==idRealName || ""==idRealName){
+{  
+  if( null==personDetail.value.name || ""==personDetail.value.name){
+    alert("昵称不能空！")    
+    return
+  }  
+  if( null==personDetail.value.realName || ""==personDetail.value.realName){
     alert("真实姓名不能空！")
-  }
-
-  var idIntrustry = document.getElementById("idIntrustry").value
-  if( null==idIntrustry || ""==idIntrustry){
+    return
+  }  
+  if( null==personDetail.value.industry || ""==personDetail.value.industry){
     alert("方向不能空！")
+    return
   }
-  //省会
-  var idrole = document.getElementById("idrole").value
-  if( null==idrole || ""== idrole){
-    alert("方向不能空！")
-  }
-  
-  var idtag = document.getElementById("idtag").value
-  if( null==idtag || ""== idtag ){
+  if( null==personDetail.value.tag || ""== personDetail.value.tag ){
     alert("标签不能空！")
+    return
   }
 
-  var idSimpleIntroduce = document.getElementById("idSimpleIntroduce").value
-  
-  if( null==idSimpleIntroduce || ""== idSimpleIntroduce ) {
+  if( null==personDetail.value.simple_introduce || ""== personDetail.value.simple_introduce ) {
     alert("简介不能空！")
+    return
   }
 
-  var idDetails = document.getElementById("idDetails").value
-  if( null == idDetails || ""== idDetails ){
+  if( null == personDetail.value.myDetails || ""== personDetail.value.myDetails ){
     alert("详细描述不能空！")
+    return
   }
-
-  var arr={}
-  arr.accid= proxy.$router.currentRoute.value.query.accid
-  arr.name = idName
-  arr.realName = idRealName
-  arr.industry = idIntrustry
-  arr.role = idrole
-  arr.province_id = CurProvinceCityRole.province_id
-  arr.city_id = CurProvinceCityRole.city_id
-  arr.tag = idtag
-  arr.simple_introduce = idSimpleIntroduce
-  arr.myDetails = idDetails
-
-  //console.log(arr)
-
-  let curl = UpdateBaseInfoUrl+Math.random()
+  console.log("pd:",personDetail.value)
   
-  axios.post(curl,arr)//默认json格式
+  let curl = UpdateBaseInfoUrl+Math.random()  
+  axios.post(curl,personDetail.value)//默认json格式
     .then((obj) =>{      
       if( null!=obj.data.code && 0==obj.data.code){
         alert("提交成功。")
@@ -361,7 +249,7 @@ function OnClickBaseInfoSubmit()
 
 function GetCity(province_id){
     let curl = CityControllUrl+Math.random()+"&province_id="+province_id
-    //console.log("curl111:",curl)
+    console.log("curl111:",curl)
     axios.get(curl)
       .then((obj) => {
         cityList.value = obj.data
@@ -370,54 +258,54 @@ function GetCity(province_id){
         var i=0
         var index=0
         for( ; i<cityList.value.length ;i++ ){
-           if(CurProvinceCityRole.city_id ==  cityList.value[i] )
+           if(personDetail.value.city_id ==  cityList.value[i].city_id )
               break
         }
         if(i<cityList.value.length){
           index = i;
         }
-        //curCityIndex = index
-        //console.log("cityindex:",index)
         
         setTimeout((select,index) => {
           select[index].selected = true  
+          //personDetail.value.city_id = select[index].innerText
+          //personDetail.value.city_name = select[index].label
         }, 1000,select,index);
       }).catch((err) => {
           alert('连接服务器失败，请刷新页面尝试！')
       });
 }
 
-
-function GetCurProvinceCityRole(){
-    
-    var accid = proxy.$router.currentRoute.value.query.accid
-    let curl = CurProvinceCityRoleUrl+Math.random()+"&accid="+accid
-    //console.log("curl111:",curl)
+function GetProvince(){
+    let curl = ProVinceUrl+Math.random()
+    console.log("gepro:",curl)
     axios.get(curl)
       .then((obj) => {
-        Object.assign(CurProvinceCityRole, obj.data)
-        var select = document.getElementById("idProvinceSelect")
-        //var index = parseInt(CurProvinceCityRole.province_id)
+        provicne.value = obj.data
+        console.log("province:",provicne.value)
+        var select = document.getElementById("idProvinceSelect")        
         var i=0
         var index=0
         for( ; i<provicne.value.length ;i++ ){
-           if(CurProvinceCityRole.city_id ==  provicne.value[i] )
+           if(personDetail.value.province_id ==  provicne.value[i].province_id )
               break
         }
         if( i < provicne.value.length ){
           index = i;
         }
         curProvinceIndex = index;
-        //console.log("provinceindex:",index)
-        select[index].selected = true
+        console.log("id:",personDetail.value.province_id)
+        console.log("index:",index)
+        setTimeout((select,index) => {
+          select[index].selected = true  
+          personDetail.value.province_id = select[index].innerText
+          personDetail.value.province_name = select[index].label
+          GetCity(personDetail.value.province_id)  
+        }, 1000,select,index);
 
-        GetCity(CurProvinceCityRole.province_id)
-        //console.log('CurProvinceCityRole:', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
       }).catch((err) => {
           alert('连接服务器失败，请刷新页面尝试！')
       });
 }
-
 
 //生命周期钩子
 onMounted(() => {
@@ -428,16 +316,9 @@ onMounted(() => {
     
     axios.get(curl)
       .then((obj) => {
-        //对ref工作，对reactive没试过。
-        // for (const key in obj.data) {
-        //   console.log(key, obj.data[key]);
-        // }
-        // Object.entries(obj.data).forEach(([k, v]) => {
-        //   personDetail.value[k]=v  //如果对象变了，就失去了响应性。只能把值赋给原有代理。
-        //     //console.log(k, v);
-        // });          
-        Object.assign(personDetail, obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-        //console.log('personDetail:',obj.data)
+        personDetail.value = obj.data
+        console.log("personDetail:",personDetail.value)
+        GetProvince()
       }).catch((err) => {
           alert('连接服务器失败，请刷新页面尝试！')
       });
@@ -459,17 +340,8 @@ onMounted(() => {
     var accid= proxy.$router.currentRoute.value.query.accid
     let curl = ContactUrl+Math.random()+"&accid="+accid
     axios.get(curl)
-      .then((obj) => {        
-        //for (const key in obj.data) {
-          //contact[key]= obj.data[key].value //这样表达无法显示值，但是可以回馈值。
-        //} 
-        Object.entries(obj.data).forEach(([k, v]) => {
-          contact[k]=v  //属性也是响应式的。          
-        });  
-        //contact.weixin = obj.data.weixin  //这样赋值也可使得属性也是响应式的。          
-        //contact.other = obj.data.other 
-        //Object.assign(contact, obj.data) //这样赋值属性不是响应式的。
-        console.log('contact', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
+      .then((obj) => {
+        contact.value = obj.data //ref貌似深层次递归响应式.
       }).catch((err) => {
           alert('连接服务器失败，请刷新页面尝试！')
       });
@@ -479,7 +351,7 @@ onMounted(() => {
     let curl = WorkUrl+Math.random()+"&accid="+accid
     axios.get(curl)
       .then((obj) =>{
-        work.value = obj.data              
+        work.value = obj.data        
       }).catch((err) => {
           alert('连接服务器失败，请刷新页面尝试！')
       });
@@ -498,23 +370,11 @@ onMounted(() => {
   }
 
 
-  function GetProvince(){
-    let curl = ProVinceUrl+Math.random()
-    axios.get(curl)
-      .then((obj) => {
-        provicne.value = obj.data
-        GetCurProvinceCityRole()
-        //console.log('Province:', obj.data)//如果是ref 不工作。只有reactive 工作。对象需要这样，数组不需要。参见HomeView.vue
-      }).catch((err) => {
-          alert('连接服务器失败，请刷新页面尝试！')
-      });
-  }
   GetPersonDetails()
   GetPrograms()
   GetContact()
   GetWork()
-  GetEducation()
-  GetProvince()
+  GetEducation()  
   GetRolses()
 });//end onMounted
 </script>
@@ -525,15 +385,15 @@ onMounted(() => {
   <div class="emyinfoDiv">
     <div class="epname" >
       <span >昵称:</span>
-      <input id="idName" type="text" v-bind:value="personDetail.name">
+      <input id="idName" type="text" v-model="personDetail.name">
     </div>
     <div class="Realname" >
       <span >真名:</span>
-      <input id="idRealName" type="text" v-bind:value="personDetail.realName">
+      <input id="idRealName" type="text" v-model="personDetail.realName">
     </div>
     <div class="eindustry">
       <span >方向:</span>
-      <input id="idIntrustry" type="text" v-bind:value="personDetail.industry">
+      <input id="idIntrustry" type="text" v-model="personDetail.industry">
     </div>
     <div class="emprovince_name">
       <span >城市:</span>
@@ -552,11 +412,11 @@ onMounted(() => {
     </div>
     <div class="etag">
       <span >创业标签:</span>
-      <input id="idtag" type="text" v-bind:value="personDetail.tag">
+      <input id="idtag" type="text" v-model="personDetail.tag">
     </div>
     <div  class="esimple_introduce">
       <span>个人简介：</span>
-      <textarea id="idSimpleIntroduce"  type="text" v-bind:value="personDetail.simple_introduce">
+      <textarea id="idSimpleIntroduce"  type="text" v-model="personDetail.simple_introduce">
       </textarea>
     </div>
   </div>
@@ -565,7 +425,7 @@ onMounted(() => {
 <br>
 <div class="emyDetails" >
   <div>详细描述：</div>
-  <textarea id="idDetails" class="edetailsDiv">{{personDetail.myDetails}}</textarea>
+  <textarea id="idDetails" class="edetailsDiv" type="text" v-model="personDetail.myDetails"></textarea>
 </div>
 <br>
 <button v-on:click="OnClickBaseInfoSubmit()">提交</button>
@@ -575,10 +435,10 @@ onMounted(() => {
   <br>
   <div class="eworkItem" v-for="(item,index) in work" >
     <div>
-      <div>公司名称：<input :id="myid('company_name',index)"  type="text" v-on:blur="OnWorkBlur('company_name',index)" v-bind:value="item.company_name"> </div>
-      <div>担任职位：<input :id="myid('jobname',index)"  type="text"  v-on:blur="OnWorkBlur('jobname',index)" v-bind:value="item.jobname"></div>
-      <div>服务时间：<input :id="myid('start_time',index)"  type="text" v-on:blur="OnWorkBlur('start_time',index)" v-bind:value="item.start_time">--<input :id="myid('end_time',index)"  v-on:blur="OnWorkBlur('end_time',index)" type="text" v-bind:value="item.end_time"></div>
-      <div class="ewcontent">工作内容：<input :id="myid('job_describe',index)"  v-on:blur="OnWorkBlur('job_describe',index)" type="text" v-bind:value="item.job_describe"></div>
+      <div>公司名称：<input :id="myid('company_name',index)"  type="text" v-model="item.company_name"> </div>
+      <div>担任职位：<input :id="myid('jobname',index)"  type="text"  v-model="item.jobname"></div>
+      <div>服务时间：<input :id="myid('start_time',index)"  type="text" v-model="item.start_time">--<input :id="myid('end_time',index)"   type="text" v-model="item.end_time"></div>
+      <div class="ewcontent">工作内容：<input :id="myid('job_describe',index)"   type="text" v-model="item.job_describe"></div>
       <div class="ewsplititem"></div>
     </div>
     <button v-on:click="DelWork(item.workex_id)" class="wdelete">删除</button>
@@ -595,27 +455,27 @@ onMounted(() => {
       <table>
         <tr>
           <td>学校名称:</td>
-          <td><input :id="myid('name',index)" v-on:blur="OnEducationBlur('name',index)"  type="text" v-bind:value="item.name"></td>
+          <td><input :id="myid('name',index)"   type="text" v-model="item.name"></td>
           <td></td>
         </tr>
         <tr>
           <td>学位名称:</td>
-          <td><input :id="myid('educational_background',index)" v-on:blur="OnEducationBlur('educational_background',index)" type="text" v-bind:value="item.educational_background"></td>
+          <td><input :id="myid('educational_background',index)" type="text" v-model="item.educational_background"></td>
           <td></td>
         </tr>
         <tr>
           <td>学习时间:</td>
-          <td><input :id="myid('start_time',index)" v-on:blur="OnEducationBlur('start_time',index)" type="text" v-bind:value="item.start_time">--</td>
-          <td><input :id="myid('end_time',index)" v-on:blur="OnEducationBlur('end_time',index)" type="text" v-bind:value="item.end_time"></td>
+          <td><input :id="myid('start_time',index)"  type="text" v-model="item.start_time">--</td>
+          <td><input :id="myid('end_time',index)"  type="text" v-model="item.end_time"></td>
         </tr>
         <tr>
           <td>专业名称:</td>
-          <td><input :id="myid('major',index)" v-on:blur="OnEducationBlur('major',index)"  type="text" v-bind:value="item.major"></td>
+          <td><input :id="myid('major',index)"  type="text" v-model="item.major"></td>
           <td></td>
         </tr>
         <tr>
           <td>取得成绩:</td>
-          <td><input :id="myid('education_describe',index)" v-on:blur="OnEducationBlur('education_describe',index)" type="text" v-bind:value="item.education_describe"></td>
+          <td><input :id="myid('education_describe',index)"  type="text" v-model="item.education_describe"></td>
           <td></td>
         </tr>
       </table>
@@ -630,7 +490,7 @@ onMounted(() => {
   </div>
 </div>
 <br>
-<button v-on:click="OnAddEducation()">新增教育经历</button>&nbsp;&nbsp;&nbsp;&nbsp;<button v-on:click="OnWorkEducationSubmit()">提交</button>
+<button v-on:click="OnAddEducation()">新增教育经历</button>&nbsp;&nbsp;&nbsp;&nbsp;<button v-on:click="OnEducationSubmit()">提交</button>
 <div class="epsplit"></div>
 
 <div>联系方式:</div>
