@@ -59,6 +59,8 @@ export var  UpdateBaseInfoUrl:String = "https://"+Domain+":448/UpdateBaseInfoCon
 export var  RolsesControllUrl:String = "https://"+Domain+":448/RolsesControll?v="
 export var  UpdateWorkUrl:String = "https://"+Domain+":448/UpdateWorkControll?v="
 export var  UpdateEducationkUrl:String = "https://"+Domain+":448/UpdateEducationControll?v="
+export var  UpdateContactUrl:String = "https://"+Domain+":448/UpdateContactControll?v="
+
 
 
 

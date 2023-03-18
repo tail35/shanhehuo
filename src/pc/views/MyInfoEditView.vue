@@ -24,7 +24,8 @@ import {
   UpdateBaseInfoUrl,
   RolsesControllUrl,
   UpdateWorkUrl,
-  UpdateEducationkUrl
+  UpdateEducationkUrl,
+  UpdateContactUrl
 } from "../js/common.ts"
 import {SubmitRegister} from "../js/register"
 import axios from 'axios' //dhlu
@@ -63,7 +64,16 @@ function isNumber(theObj) {
 function OnContactSubmit()
 {
   console.log("scn",contact)
-
+  let curl = UpdateContactUrl+Math.random()+"&accid="+proxy.$router.currentRoute.value.query.accid
+  
+  axios.post(curl,contact.value)//默认json格式
+    .then((obj) =>{ 
+      if( null!=obj.data.code && 0==obj.data.code){         
+        alert("提交成功。")
+      }
+    }).catch((err) => {
+        alert('连接服务器失败，请刷新页面尝试！')
+    }); 
 }
 
 function DelWork(workex_id)
